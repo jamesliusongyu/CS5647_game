@@ -1,0 +1,4 @@
+aiohttp==3.8.5
+websockets==13.1
+aiohttp_cors==0.7.0
+

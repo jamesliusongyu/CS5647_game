@@ -1,0 +1,17 @@
+# Ignore the virtual environment directory
+venv/
+
+# Node.js dependencies
+node_modules/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore build artifacts
+dist/
+build/
