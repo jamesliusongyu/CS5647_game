@@ -9,6 +9,9 @@ pip install -r requirements.txt
 
 # Frontend
 
-npm create vite@latest frontend --template react-ts
 npm install
 npm run dev
+(venv) ➜ backend git:(main) ✗ npm -v  
+10.5.0
+(venv) ➜ backend git:(main) ✗ node -v
+v21.7.1
