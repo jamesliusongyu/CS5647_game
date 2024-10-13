@@ -1,0 +1,73 @@
+/* src/styles/Matchmaking.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensure padding and borders are included in the width/height */
+  }
+  
+  html, body {
+    height: 100%; /* Make sure the body takes up the full height */
+    font-family: Arial, sans-serif; /* A clean font */
+  }
+  
+  .matchmaking-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+    background-color: #b590d3; /* Light purple background */
+  }
+  
+  .matchmaking-box {
+    background-color: #e1d5ee; /* Lighter purple for the box */
+    border-radius: 10px;
+    text-align: center;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 90%; /* Make the box take up a majority of the width */
+    max-width: 500px; /* Limit how wide it can be */
+  }
+  
+  h2 {
+    color: #70528b; /* Slightly darker purple for the heading */
+    font-size: 24px;
+  }
+  
+  .code-box {
+    background-color: #d3c5e0;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 20px 0;
+  }
+  
+  .code-box h1 {
+    font-size: 48px;
+    color: #4a2e61;
+  }
+  
+  p {
+    color: #6b5b85;
+    font-size: 18px;
+  }
+  
+  .waiting-text {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  
+  .cancel-button {
+    background-color: #f3b6d7; /* Pink cancel button */
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .cancel-button:hover {
+    background-color: #ff89c0; /* Slightly darker pink on hover */
+  }
+  
