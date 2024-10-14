@@ -1,32 +1,51 @@
 // src/pages/MatchmakingPage.tsx
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Matchmaking.css';
+import { useWebSocket } from '../contexts/WebSocketContext';
 
 const Matchmaking: React.FC = () => {
+  const navigate = useNavigate();
+  const socket = useWebSocket(); // Retrieve WebSocket
   const [code, setCode] = useState<string | null>(null);
   const [players, setPlayers] = useState<number>(1);
 
+
   useEffect(() => {
-    const websocket = new WebSocket('ws://localhost:8000');
+    if (socket) {
+      // Send message to ask for invite code
+      const message = JSON.stringify({
+        action: 'create'
+      });
+      socket.send(message);
 
-    websocket.onopen = () => {
-      console.log('Connected to WebSocket');
-    };
+      
+      // Listening to messages from WebSocket
+      socket.onmessage = (event: { data: string; }) => {
+        const data = JSON.parse(event.data);
+        if (data.action === 'create' && data.code) {
+          setCode(data.code)
+        }
+        if (data.status === 'success') {
+          // Navigate to the match page on success
+          setPlayers(2)
+          navigate('/match');
+        } else if (data.status === 'error') {
+          console.error(data.message); // Handle error message
+        }
+      };
+    } else {
+      // Handle the case where no WebSocket instance is available
+      console.error("No WebSocket connection found.");
+    }
 
-    websocket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.code) {
-        setCode(data.code); // Assuming the WebSocket sends the match code
-      }
-      if (data.players) {
-        setPlayers(data.players); // Assuming the WebSocket sends player count
-      }
-    };
-
+    // Cleanup WebSocket event listeners when component unmounts
     return () => {
-      websocket.close();
+      if (socket) {
+        socket.onmessage = null;
+      }
     };
-  }, []);
+  }, [socket, navigate]);
 
   return (
     <div className="matchmaking-container">
