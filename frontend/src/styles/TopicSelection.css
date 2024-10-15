@@ -1,0 +1,72 @@
+.topic-selection-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #b590d3; /* Light purple background */
+  }
+  
+  .header {
+    height: 50px;
+    background-color: #7B519D;
+  }
+  
+  .match-title {
+    font-size: 36px;
+    color: #D3C0F3;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .select-topic-text {
+    font-size: 24px;
+    color: #F58CAF;
+    margin-bottom: 30px;
+  }
+  
+  .topics-panel {
+    display: flex;
+    justify-content: space-around;
+    width: 50%;
+  }
+  
+  .topic-box {
+    background-color: #6EE4E8;
+    width: 150px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: #4A4A4A;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .topic-box:hover {
+    opacity: 0.8;
+  }
+  
+  .selected {
+    border: 3px solid #FF7A89;
+  }
+  
+  .player-tag {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #FF7A89; /* For P1 */
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    top: -10px;
+    right: -10px;
+  }
+  
