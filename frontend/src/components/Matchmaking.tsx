@@ -1,21 +1,27 @@
 // src/pages/MatchmakingPage.tsx
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/Matchmaking.css';
 import { useWebSocket } from '../contexts/WebSocketContext';
 
 const Matchmaking: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // Use this to get the topic passed from TopicSelection
   const socket = useWebSocket(); // Retrieve WebSocket
   const [code, setCode] = useState<string | null>(null);
   const [players, setPlayers] = useState<number>(1);
+  const username = localStorage.getItem('username') || 'Player'; // Retrieve username from localStorage or default to 'Player'
+  const selectedTopic = location.state?.topic || 'Random'; // Default to "Random" if no topic is selected
+
 
 
   useEffect(() => {
     if (socket) {
       // Send message to ask for invite code
       const message = JSON.stringify({
-        action: 'create'
+        action: 'create',
+        username: username,
+        topic: selectedTopic,
       });
       socket.send(message);
 
@@ -29,7 +35,7 @@ const Matchmaking: React.FC = () => {
         if (data.status === 'success') {
           // Navigate to the match page on success
           setPlayers(2)
-          navigate('/match');
+          navigate('/match',{ state: { selectedTopic } });
         } else if (data.status === 'error') {
           console.error(data.message); // Handle error message
         }

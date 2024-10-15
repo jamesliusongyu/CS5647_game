@@ -9,6 +9,8 @@ const Lobby: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>(''); // State to handle errors
   const socket = useWebSocket(); // Access WebSocket from context
   const navigate = useNavigate();
+  const username = localStorage.getItem('username') || 'Player'; // Retrieve username from localStorage or default to 'Player'
+
 
   useEffect(() => {
     if (socket) {
@@ -41,13 +43,15 @@ const Lobby: React.FC = () => {
       const message = JSON.stringify({
         action: 'join',
         code: inviteCode.trim(),
+        username: username,
       });
       socket.send(message);
     }
   };
 
   const handleCreateRoom = () => {
-    navigate("/matchmaking")
+    navigate("/topicselection")
+    // navigate("/matchmaking")
   }
 
   return (
@@ -66,6 +70,7 @@ const Lobby: React.FC = () => {
               placeholder="Enter invite code"
             />
             <button className="accent-button" onClick={handleJoinRoom}>Join Room</button>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
           </div>
         </div>
       </div>

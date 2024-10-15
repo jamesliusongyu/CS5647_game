@@ -1,9 +1,12 @@
 import asyncio
+import base64
 import json
 import websockets
 import random
 import string
 import time
+from api.api_handler import return_topic_words_score
+
 
 # Dictionary to track rooms and their clients, along with expiration time and client ID
 clients = {}
@@ -15,24 +18,48 @@ def generate_match_code(length=6):
     characters = string.ascii_letters + string.digits  # Alphanumeric characters
     return ''.join(random.choice(characters) for _ in range(length))
 
-# Function to generate a random client ID
-def generate_client_id():
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+# Function to generate a random client ID, including the username
+def generate_client_id(username):
+    random_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+    return f"{random_id}_{username}"
 
 # WebSocket handler for matchmaking
 async def handle_websocket_ping(websocket, path):
     global match_code
-    client_id = generate_client_id()  # Assign a unique ID to the client
-    print(f"New connection established, Client ID: {client_id}")
+    client_id = None  # Initialize client ID as None
+    print(f"New connection established")
 
     try:
         # Keep connection alive, wait for messages
         async for message in websocket:
-            print(f"Received message from Client ID {client_id}: {message}")
             data = json.loads(message)
 
+            if data.get("action") == "audio_input" and data.get("word") and data.get("audio"):
+                word_for_round = data["word"]
+                audio_base64 = data["audio"]  # This is the base64-encoded audio string
+                
+                # Decode the base64 audio string
+                audio_input = base64.b64decode(audio_base64)
+                # If binary data (audio) is received, handle the audio input
+                print(f"Received audio data from Client ID {client_id}")
+                
+                # Call the return_topic_words_score with the current word and audio input
+                score_response = await return_topic_words_score(word_for_round, audio_input)
+                # Send the score back to the client
+                await websocket.send(json.dumps({
+                    "action": "score",
+                    "word": word_for_round,
+                    "score": score_response['score'],
+                }))
+
+
             # Handle room creation request (Player A)
-            if data.get("action") == "create":
+            if data.get("action") == "create" and data.get("username"):
+                # Generate client ID using the username
+                username = data.get("username")
+                client_id = generate_client_id(username)
+                print(f"Assigned Client ID: {client_id}")
+
                 # Generate match code and set expiration time
                 match_code = generate_match_code()
                 expiration_time = time.time() + EXPIRATION_TIME
@@ -42,8 +69,10 @@ async def handle_websocket_ping(websocket, path):
                 print(f"Generated match code {match_code} for Client ID {client_id}")
 
             # Handle join request (Player B)
-            elif data.get("action") == "join" and data.get("code"):
+            elif data.get("action") == "join" and data.get("code") and data.get("username"):
                 room_code = data["code"]
+                username = data.get("username")
+                client_id = generate_client_id(username)  # Generate Client ID for Player B
                 current_time = time.time()
                 if room_code in clients:
                     room = clients[room_code]
@@ -74,6 +103,7 @@ async def handle_websocket_ping(websocket, path):
                     await websocket.send(json.dumps(response))
                     print(f"Client ID {client_id} entered an invalid code {room_code}")
 
+
     except websockets.ConnectionClosed:
         print(f"Client ID {client_id} disconnected")
     finally:
@@ -94,6 +124,6 @@ async def start_matchmaking_server(room_code):
     if len(clients[room_code]["connections"]) == 2:
         client1_id = clients[room_code]["connections"][0][1]
         client2_id = clients[room_code]["connections"][1][1]
-        await clients[room_code]["connections"][0][0].send(json.dumps({"action": "start", "message": "Match has started!"}))
-        await clients[room_code]["connections"][1][0].send(json.dumps({"action": "start", "message": "Match has started!"}))
+        await clients[room_code]["connections"][0][0].send(json.dumps({"action": "start", "username1": client1_id, "username2": client2_id,"message": "Match has started!"}))
+        await clients[room_code]["connections"][1][0].send(json.dumps({"action": "start", "username1": client1_id, "username2": client2_id, "message": "Match has started!"}))
         print(f"Both clients in room {room_code} (Client IDs {client1_id} and {client2_id}) have been notified that the match has started.")
