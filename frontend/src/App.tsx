@@ -6,9 +6,11 @@ import WebSocket from './components/WebSocket';
 import Matchmaking from './components/Matchmaking';
 import Login from './components/Login';
 import Lobby from './components/Lobby';
+import { WebSocketProvider } from './contexts/WebSocketContext';
 
 const App: React.FC = () => {
   return (
+    <WebSocketProvider>
     <Router>
       <Routes>
         <Route path="/matchmaking" Component={Matchmaking} />
@@ -17,6 +19,7 @@ const App: React.FC = () => {
         <Route path="/" Component={WebSocket} />
       </Routes>
     </Router>
+    </WebSocketProvider>
   );
 };
 
