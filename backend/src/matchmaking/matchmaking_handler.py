@@ -108,7 +108,7 @@ async def handle_websocket_ping(websocket, path):
         print(f"Client ID {client_id} disconnected")
     finally:
         # Clean up: Remove client on disconnect if part of a room
-        for room_code, room in clients.items():
+        for room_code, room in list(clients.items()):
             for connection, conn_id in room["connections"]:
                 if websocket == connection:
                     room["connections"].remove((connection, conn_id))
