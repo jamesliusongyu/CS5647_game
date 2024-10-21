@@ -10,12 +10,14 @@ import Lobby from './components/Lobby';
 import TopicSelection from './components/TopicSelection';
 import Round from './components/Round';
 import { WebSocketProvider } from './contexts/WebSocketContext';
+import Results from './components/Results';
 
 const App: React.FC = () => {
   return (
     <WebSocketProvider>
     <Router>
       <Routes>
+        <Route path="/results" Component={Results} />
         <Route path="/matchmaking" Component={Matchmaking} />
         <Route path="/topicselection" Component={TopicSelection} />
         <Route path="/round" Component={Round} />
