@@ -15,3 +15,7 @@ Thumbs.db
 # Ignore build artifacts
 dist/
 build/
+
+# Ignore wav/webm files
+*.wav
+*.webm
