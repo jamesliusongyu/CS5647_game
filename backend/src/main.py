@@ -5,8 +5,9 @@ import websockets
 
 from api.api_handler import get_topic_words, handle_send_input
 from cors.cors_setup import configure_cors
-from matchmaking.matchmaking_handler import handle_websocket_ping
+from matchmaking.matchmaking_handler import MatchMaking
 
+backend_handler = MatchMaking()
 # Function to set up the HTTP server with CORS enabled
 def setup_http_server():
     app = web.Application()
@@ -14,6 +15,7 @@ def setup_http_server():
     # Set up the HTTP routes
     app.router.add_get('/send_input', handle_send_input)
     app.router.add_get('/get_topic_words', get_topic_words)
+    app.router.add_get('/results', backend_handler.get_results)
 
 
     # Configure CORS for the application
@@ -24,7 +26,7 @@ def setup_http_server():
 # Main function to start both WebSocket and HTTP servers
 async def start_servers():
     # Start the WebSocket server
-    websocket_server = websockets.serve(handle_websocket_ping, "localhost", 8000)
+    websocket_server = websockets.serve(backend_handler.handle_websocket_ping, "localhost", 8000)
 
     # Set up the HTTP server
     http_app = setup_http_server()
