@@ -55,12 +55,12 @@ const Lobby: React.FC = () => {
   }
 
   return (
-    <div className="container">
+    <div className="box-container">
       <div className="white-box">
-        <h1>Lobby</h1>
+        <h1>LOBBY</h1>
         <div className="panel-container">
           <div className="panel">
-            <button className="accent-button" onClick={handleCreateRoom}>Create Room</button>
+            <button className="accent-button" onClick={handleCreateRoom}>CREATE ROOM</button>
           </div>
           <div className="panel">
             <input
@@ -69,7 +69,7 @@ const Lobby: React.FC = () => {
               onChange={(e) => setInviteCode(e.target.value)}
               placeholder="Enter invite code"
             />
-            <button className="accent-button" onClick={handleJoinRoom}>Join Room</button>
+            <button className="accent-button" onClick={handleJoinRoom}>JOIN ROOM</button>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
           </div>
         </div>

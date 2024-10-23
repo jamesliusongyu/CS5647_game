@@ -1,42 +1,43 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+div {
+  width: 100%;
+}
+
+.container {
+  display: block;
+  height: 100vh;
+  /* Full viewport height */
+  width: 100vw;
+  /* Full viewport width */
+  background-color: #b590d3;
+  /* Light purple background */
+}
+
+.white-box {
+  background-color: #e1d5ee;
+  display: flex;
+  flex-wrap: wrap;
+  /* Lighter purple for the box */
+  border-radius: 10px;
   text-align: center;
+  padding: 30px 30px 60px;
+  margin: 3% auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  /* Make the box take up a majority of the width */
+  max-width: 50%;
+  min-height: 40vh;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.white-box > h1 {
+  width: 100%;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.logo-container {
+  text-align: center;
+  padding-top: 3%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.logo-container img {
+  width: 10em;
+  height: 10em;
 }

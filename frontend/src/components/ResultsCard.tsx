@@ -1,5 +1,5 @@
 // component
-import React, { useState, useEffect } from 'react';
+import React, {useEffect } from 'react';
 import '../styles/Results.css';
 
 interface PlayerProps {

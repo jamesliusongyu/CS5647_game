@@ -72,20 +72,20 @@ const Round: React.FC = () => {
       mediaRecorderRef.current = mediaRecorder;
       setIsRecording(true);
       setCountdown(5); // Reset the countdown to 5 seconds
-  
+
       mediaRecorder.start();
-  
+
       const audioChunks: Blob[] = [];
       mediaRecorder.ondataavailable = (event) => {
         audioChunks.push(event.data);
       };
-  
+
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
         const audioURL = URL.createObjectURL(audioBlob);
         setAudioURL(audioURL); // Set the audio URL for playback
         setIsRecording(false);
-  
+
         // Convert Blob to Base64
         const reader = new FileReader();
         reader.readAsDataURL(audioBlob); // This will read the blob as a base64-encoded string
@@ -98,7 +98,7 @@ const Round: React.FC = () => {
               word: words[currentWordIndex],
               audio: base64Audio, // Send audio as Base64
             };
-  
+
             // Send the JSON object via WebSocket
             if (socket && socket.readyState === WebSocket.OPEN) {
               socket.send(JSON.stringify(message));
@@ -114,7 +114,7 @@ const Round: React.FC = () => {
       console.error('Error accessing microphone:', error);
     }
   };
-  
+
   const stopRecording = () => {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
       mediaRecorderRef.current.stop(); // Stop recording
@@ -130,47 +130,52 @@ const Round: React.FC = () => {
   // Close the modal
   const closeModal = () => {
     setIsModalOpen(false);
-    if (currentWordIndex < words.length -1) {
-        setCurrentWordIndex(currentWordIndex + 1); // move to the next word
-        setAudioURL(null);
-        setScore(null);
+    if (currentWordIndex < words.length - 1) {
+      setCurrentWordIndex(currentWordIndex + 1); // move to the next word
+      setAudioURL(null);
+      setScore(null);
     } else {
-        console.log("All words completed");
+      console.log("All words completed");
     }
-};
+  };
 
   return (
-    <div className="round-container">
-      <div className="header"></div>
-      <h2 className="match-title">NORMAL 1V1</h2>
-      
-      <div className="progress-indicator">
-        <span className="dot"></span>
-        <span className="dot"></span>
-        <span className="dot"></span>
-      </div>
+    <div className="box-container">
+      <div className="white-box">
+        <h1>NORMAL 1V1</h1>
 
-      <h3 className="instruction-text">Pronounce this word:</h3>
-
-      <div className="word-box">
-        <h1>{words.length > 0 ? words[currentWordIndex] : 'Loading...'}</h1> {/* Display the current word */}
-      </div>
-
-      <div className="countdown-circle">
-        <span>{countdown}</span>
-      </div>
-
-      {/* Button to start recording */}
-      <button className="record-button" onClick={startRecording} disabled={isRecording || isLoading}>
-        {isRecording ? 'Recording...' : 'Start Recording'}
-      </button>
-
-      {/* Display the recorded audio */}
-      {audioURL && (
-        <div className="audio-player">
-          <audio controls src={audioURL} />
+        <div className="progress-indicator">
+          <span className="dot"></span>
+          <span className="dot"></span>
+          <span className="dot"></span>
         </div>
-      )}
+
+        <h3 className="instruction-text">Pronounce this word:</h3>
+
+        <div className="word-box">
+          <h1>{words.length > 0 ? words[currentWordIndex] : 'Loading...'}</h1> {/* Display the current word */}
+        </div>
+
+        <div>
+          <div className="countdown-circle">
+            <span>{countdown}</span>
+          </div>
+        </div>
+
+        {/* Button to start recording */}
+        <div>
+          <button className="record-button" onClick={startRecording} disabled={isRecording || isLoading}>
+            {isRecording ? 'Recording...' : 'Start Recording'}
+          </button>
+        </div>
+
+        {/* Display the recorded audio */}
+        {audioURL && (
+          <div className="round audio-player">
+            <audio controls src={audioURL} />
+          </div>
+        )}
+      </div>
 
       {/* Loading spinner modal */}
       {isLoading && (

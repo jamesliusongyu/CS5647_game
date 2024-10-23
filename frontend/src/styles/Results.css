@@ -15,29 +15,6 @@
     /* A clean font */
   }
   
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    /* Full viewport height */
-    width: 100vw;
-    /* Full viewport width */
-    background-color: #b590d3;
-    /* Light purple background */
-  }
-
-  .white-box {
-    background-color: #e1d5ee;
-    /* Lighter purple for the box */
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    /* Make the box take up a majority of the width */
-    max-width: 50%;
-    align-content: center;
-  }
   
   .card {
     background-color: #e1d5ee;
@@ -61,97 +38,8 @@
   .player-result {
     margin-bottom: 20px;
   }
-  
-  .panel-container {
-    display: flex;
-    max-width: 100%;
-    align-content: center;
-    justify-content: center;
-  }
-  
-  .panel {
-    width: 45%;
-    /* Each element takes 45% of the container's width */
-    background-color: #e1d5ee;
-    padding: 20px;
-    align-content: center;
-    align-items: start;
-  }
 
   .result-word {
     text-align: start;
     margin: 0;
-  }
-  
-  .accent-button {
-    background-color: #B4A7D6;
-    /* Pink cancel button */
-    border: none;
-    padding: 10px 20px;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    min-height: 50px;
-    width: 100%;
-    /* Stretch the button to match the input width */
-  }
-  
-  .accent-button:hover {
-    background-color: #7B68B2;
-    /* Slightly darker pink on hover */
-  }
-
-  h3 {
-    color:#70528b;
-  }
-  
-  h2 {
-    color: #70528b;
-    /* Slightly darker purple for the heading */
-    font-size: 24px;
-  }
-  
-  
-  h1 {
-    font-size: 2rem;
-    color: #70528b;
-    margin-bottom: 20px;
-  }
-  
-  label {
-    font-size: 1.4rem;
-    color: #4e4b50;
-    display: block;
-    font-weight:bold;
-    text-align: start;
-  }
-  
-  input {
-    padding: 12px;
-    font-size: 1rem;
-    border-radius: 8px;
-    background-color: #fff;
-    color: black;
-    border: 1px solid #ccc;
-    margin-bottom: 20px;
-    width: 100%;
-    text-align: start;
-  }
-  
-  .code-box {
-    background-color: #d3c5e0;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 20px 0;
-  }
-  
-  .code-box h1 {
-    font-size: 48px;
-    color: #4a2e61;
-  }
-  
-  p {
-    color: #6b5b85;
-    font-size: 18px;
   }

@@ -15,54 +15,32 @@ body {
   /* A clean font */
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  /* Full viewport height */
-  width: 100vw;
-  /* Full viewport width */
-  background-color: #b590d3;
-  /* Light purple background */
-}
-
-.white-box {
-  background-color: #e1d5ee;
-  /* Lighter purple for the box */
-  border-radius: 10px;
-  text-align: center;
-  padding: 30px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  /* Make the box take up a majority of the width */
-  max-width: 30%;
-  min-height: 35%;
-  align-content: center;
+.box-container {
+  max-width: 100%;
+  width: 100%;
 }
 
 .panel-container {
   display: flex;
+  width: 100%;
   max-width: 100%;
-  align-content: center;
   justify-content: center;
 }
 
 .panel {
   width: 45%;
   /* Each element takes 45% of the container's width */
-  padding: 20px;
-  margin: 10px;
-  background-color: #d3bde6;
+  padding: 0 20px 20px;
+  margin: 0 10px 10px;
   border-radius: 10px;
-  align-content: end;
+  align-self: end;
 }
 
 .accent-button {
-  background-color: #B4A7D6;
+  background-color: #7B68B2;
   /* Pink cancel button */
   border: none;
-  padding: 10px 20px;
+  padding: 20px;
   color: white;
   border-radius: 5px;
   cursor: pointer;
@@ -73,8 +51,12 @@ body {
 }
 
 .accent-button:hover {
-  background-color: #7B68B2;
-  /* Slightly darker pink on hover */
+  background-color: #B4A7D6;
+  /* Slightly lighter on hover */
+}
+
+form {
+  width: 100%;
 }
 
 h2 {
@@ -108,21 +90,4 @@ input {
   margin-bottom: 20px;
   width: 100%;
   text-align: start;
-}
-
-.code-box {
-  background-color: #d3c5e0;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 20px 0;
-}
-
-.code-box h1 {
-  font-size: 48px;
-  color: #4a2e61;
-}
-
-p {
-  color: #6b5b85;
-  font-size: 18px;
 }

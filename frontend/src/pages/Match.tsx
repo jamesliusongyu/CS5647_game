@@ -55,9 +55,9 @@ const Match: React.FC = () => {
   }, [socket, storedUsername]);
 
   return (
-    <div className="match-container">
-      <div className="header"></div>
-      <h2 className="match-title">NORMAL 1V1</h2>
+    <div className="box-container">
+      <div className="white-box">
+      <h1>NORMAL 1V1</h1>
       <div className="match-panel">
         <div className="player-box">
           <div className="player">{localPlayer}</div>
@@ -68,6 +68,7 @@ const Match: React.FC = () => {
         </div>
       </div>
       <div className="countdown">{countdown}</div>
+      </div>
     </div>
   );
 };

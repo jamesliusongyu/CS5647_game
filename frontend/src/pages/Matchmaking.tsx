@@ -54,15 +54,15 @@ const Matchmaking: React.FC = () => {
   }, [socket, navigate]);
 
   return (
-    <div className="matchmaking-container">
-      <div className="matchmaking-box">
-        <h2>Normal 1v1</h2>
+    <div className="box-container">
+      <div className="white-box">
+        <h1>NORMAL 1V1</h1>
         <div className="code-box">
           <h1>{code || 'Loading...'}</h1>
         </div>
         <p>Copy this code to join the match!</p>
         <p className="waiting-text">Waiting for players... ({players}/2)</p>
-        <button className="cancel-button">Cancel</button>
+        <button className="cancel-button">CANCEL</button>
       </div>
     </div>
   );
