@@ -1,5 +1,5 @@
 // component
-import React, {useEffect } from 'react';
+import React, { useEffect } from 'react';
 import '../styles/Results.css';
 
 interface PlayerProps {
@@ -7,14 +7,14 @@ interface PlayerProps {
     audio: string;
     score1: number;
     score2: number;
-  }
-  
-  interface ResultsCardProps {
+}
+
+interface ResultsCardProps {
     word: string;
     sample: string;
     player1: PlayerProps;
     player2: PlayerProps;
-  }
+}
 
 const ResultsCard: React.FC<ResultsCardProps> = ({ word, sample, player1, player2 }) => {
 
@@ -25,7 +25,7 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, sample, player1, player
     return (
         <div className="card">
             <div className="panel-container">
-                <div className="panel">
+                <div className="results panel">
                     <h1 className="result-word">{word}</h1>
                     <h3 className="result-word">Sample Answer</h3>
                     {(
@@ -34,7 +34,7 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, sample, player1, player
                         </div>
                     )}
                 </div>
-                <div className="panel">
+                <div className="results panel">
                     <div className="player-result">
                         <h3 className="result-word">{player1.username}'s Answer</h3>
                         {(
@@ -42,11 +42,14 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, sample, player1, player
                                 <audio controls src={player1.audio} />
                             </div>
                         )}
-                         <p className="result-word">Score 1</p>
-                         <p className="result-word">{player1.score1}</p>
-                         <p className="result-word">Score 2</p>
-                         <p className="result-word">{player1.score2}</p>
-
+                        <div className="score">
+                            <p className="result-word">Pronounciation Score</p>
+                            <p className="result-word">{player1.score1}</p>
+                        </div>
+                        <div className="score">
+                            <p className="result-word">Intonation Score</p>
+                            <p className="result-word">{player1.score2}</p>
+                        </div>
                     </div>
                     <div className="player-result">
                         <h3 className="result-word">{player2.username}'s Answer</h3>
@@ -55,10 +58,14 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, sample, player1, player
                                 <audio controls src={player2.audio} />
                             </div>
                         )}
-                        <p className="result-word">Score 1</p>
-                         <p className="result-word">{player2.score1}</p>
-                         <p className="result-word">Score 2</p>
-                         <p className="result-word">{player2.score2}</p>
+                        <div className="score">
+                            <p className="result-word">Pronounciation Score</p>
+                            <p className="result-word">{player2.score1}</p>
+                        </div>
+                        <div className="score">
+                            <p className="result-word">Intonation Score</p>
+                            <p className="result-word">{player2.score2}</p>
+                        </div>
                     </div>
 
                 </div>

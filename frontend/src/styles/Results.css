@@ -29,6 +29,15 @@
     margin: 10px;
     align-content: center;
   }
+
+  .results {
+    padding: 10px;
+  }
+  
+  .results.panel {
+    padding: 20px;
+    margin: auto 0;
+  }
   
   .audio-player {
     margin: 10px;
@@ -36,10 +45,24 @@
   }
 
   .player-result {
-    margin-bottom: 20px;
+    margin-bottom: 2em;
+  }
+
+  .final-result {
+    margin-top: 5em;
   }
 
   .result-word {
     text-align: start;
     margin: 0;
   }
+
+  .score {
+    display: flex;
+  }
+
+  h3.result-word, h1.pink {
+    color: #ff89c0;
+  }
+
+  

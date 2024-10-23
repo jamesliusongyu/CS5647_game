@@ -2,14 +2,20 @@ div {
   width: 100%;
 }
 
-.container {
-  display: block;
+.app.container {
+  overflow-y: scroll;
+  overflow-x: hidden;
   height: 100vh;
   /* Full viewport height */
   width: 100vw;
   /* Full viewport width */
   background-color: #b590d3;
   /* Light purple background */
+}
+
+.container {
+  display: block;
+  overflow: hidden;
 }
 
 .white-box {
@@ -26,6 +32,7 @@ div {
   /* Make the box take up a majority of the width */
   max-width: 50%;
   min-height: 40vh;
+  
 }
 
 .white-box > h1 {

@@ -15,7 +15,7 @@ import Logo from './components/Logo';
 const App: React.FC = () => {
   return (
     <WebSocketProvider>
-    <div className='container'>
+    <div className='app container'>
       <Logo></Logo>
     <Router>
       <Routes>
