@@ -26,6 +26,9 @@ class DBHandler():
         # Ping the MongoDB server to test the connection
         self.ping_server()
 
+        # ensure index existed
+        self.ensure_index()
+
     def ping_server(self):
         """
         Helper method that pings to the MongoDB server for connection test.
@@ -37,6 +40,35 @@ class DBHandler():
         except ConnectionFailure:
             print("ping(): Failed to connect to MongoDB server")
             raise  # Re-raise the exception to handle it outside
+
+    def ensure_index(self):
+        """
+        Ensure that there is an index on the 'match_code' field in the 'scores' collection.
+        If no such index exists, create it.
+        """
+        try:
+            collection = self.db["scores"]
+
+            # Get the list of existing indexes
+            indexes = collection.list_indexes()
+
+            # Check if an index on 'match_code' exists
+            match_code_index_exists = False
+            for index in indexes:
+                if "match_code" in index["key"]:
+                    match_code_index_exists = True
+                    break
+
+            # If index does not exist, create it
+            if not match_code_index_exists:
+                collection.create_index("match_code")
+                print("ensure_match_code_index(): Index on 'match_code' created.")
+            else:
+                print("ensure_match_code_index(): Index on 'match_code' already exists.")
+
+        except (ConnectionFailure, PyMongoError) as e:
+            print(f"ensure_match_code_index(): Error ensuring index on 'match_code': {e}")
+            raise
 
     def load_data(self, collection_name, filter_criteria=None):
         """
@@ -69,6 +101,21 @@ class DBHandler():
 
         except (ConnectionFailure, PyMongoError) as e:
             print(f"load_data(): Error loading data from MongoDB: {e}")
+            raise
+
+    def insert_data(self, collection_name, data):
+        try:
+            if collection_name in self.db.list_collection_names():
+                print(f"insert_data(): Collection '{collection_name}' exists.")
+            else:
+                print(
+                    f"insert_data(): Collection '{collection_name}' does not exist. New collection will be created.")
+
+            collection = self.db[collection_name]
+            collection.insert_one(data)
+
+        except (ConnectionFailure, PyMongoError) as e:
+            print(f"upsert_data(): Error inserting data into MongoDB: {e}")
             raise
 
     def upsert_data(self, collection_name, data, key_field: str = '_id'):
