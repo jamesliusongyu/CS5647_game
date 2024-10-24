@@ -35,7 +35,7 @@ const Matchmaking: React.FC = () => {
         if (data.status === 'success') {
           // Navigate to the match page on success
           setPlayers(2)
-          navigate('/match',{ state: { selectedTopic } });
+          navigate('/match',{ state: { selectedTopic, code } });
         } else if (data.status === 'error') {
           console.error(data.message); // Handle error message
         }

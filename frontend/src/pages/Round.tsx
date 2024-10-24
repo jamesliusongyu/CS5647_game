@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useWebSocket } from '../contexts/WebSocketContext'; // Assuming you have a WebSocket context
 import '../styles/Round.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Round: React.FC = () => {
   const [countdown, setCountdown] = useState<number>(5); // 5-second countdown for recording
@@ -13,6 +14,10 @@ const Round: React.FC = () => {
   const [score, setScore] = useState<number | null>(null); // State to store the score
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // To control the modal visibility
   const [isLoading, setIsLoading] = useState<boolean>(false); // To show loading spinner
+  const location = useLocation(); // Use this to get the topic passed from TopicSelection
+  const selectedTopic = location.state?.selectedTopic || 'Random'; // Default to "Random" if no topic is selected
+  const gameCode = location.state?.gameCode || ''; // Default to " " if no code"
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch the words when the component mounts
@@ -102,7 +107,7 @@ const Round: React.FC = () => {
             // Send the JSON object via WebSocket
             if (socket && socket.readyState === WebSocket.OPEN) {
               socket.send(JSON.stringify(message));
-              console.log('Audio and word sent via WebSocket');
+              console.log('Audio and word sent via WebSocket :' + currentWordIndex);
               setIsLoading(true); // Start loading after sending audio
             } else {
               console.error('WebSocket connection is not open');
@@ -135,9 +140,10 @@ const Round: React.FC = () => {
       setAudioURL(null);
       setScore(null);
     } else {
-      console.log("All words completed");
-    }
-  };
+        console.log("All words completed");
+        navigate('/results', {state: {code: gameCode}});
+      }
+};
 
   return (
     <div className="box-container">
