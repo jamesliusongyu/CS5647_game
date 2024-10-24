@@ -21,8 +21,9 @@ const Lobby: React.FC = () => {
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data.status === 'success') {
+          console.log(inviteCode, "inviteCode")
           // Navigate to the match page on successful room join
-          navigate('/match');
+          navigate('/match', { state: { code: inviteCode } });
         } else if (data.status === 'error') {
           setErrorMessage(data.message); // Display error message on invalid code
         }

@@ -1,0 +1,104 @@
+/* General Reset and Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    overflow: hidden; /* Prevent scrolling */
+  }
+  
+  /* Main Container for the Page */
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #b590d3;
+    height: 100vh; /* Full viewport height */
+  }
+  
+  /* White Box Styling for Overall Structure */
+  .white-box {
+    background-color: #e1d5ee;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+  }
+  
+  /* Card for Each Result */
+  .card {
+    background-color: #e1d5ee;
+    border: 1px solid #7B68B2;
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Layout for the Two Player Results and the Sample */
+  .panel-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+    padding: 5px;
+  }
+  
+  /* Styling for Each Panel (Sample and Players) */
+  .panel {
+    background-color: #f1eaf5;
+    padding: 5px;
+    border-radius: 8px;
+    flex: 1;
+    text-align: center;
+  }
+  
+  /* Audio Player Styling */
+  .audio-player {
+    margin: 5px 0;
+  }
+  
+  /* Styling for Player Result Section */
+  .player-result {
+    margin-bottom: 10px;
+  }
+  
+  /* Word Heading */
+  .result-word {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: #70528b;
+  }
+  
+  /* Score Display */
+  .score-display {
+    font-size: 0.9rem;
+    color: #4e4b50;
+  }
+  
+  /* General Button Styling */
+  .accent-button {
+    background-color: #B4A7D6;
+    border: none;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .accent-button:hover {
+    background-color: #7B68B2;
+  }
+  
