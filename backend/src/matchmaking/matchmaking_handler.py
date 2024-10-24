@@ -34,7 +34,7 @@ class MatchMaking():
     # WebSocket handler for matchmaking
     async def handle_websocket_ping(self, websocket, path):
         client_id = None  # Initialize client ID as None
-        print(f"New connection established")
+        print(f"Websocket(): New connection established")
         match_code = None
         username = None
 
@@ -50,7 +50,7 @@ class MatchMaking():
                     # Decode the base64 audio string
                     audio_input = base64.b64decode(audio_base64)
                     # If binary data (audio) is received, handle the audio input
-                    print(f"Received audio data from Client ID {client_id}")
+                    print(f"Websocket(): Received audio data from Client ID {client_id}")
 
                     # Call the return_topic_words_score with the current word and audio input
                     score_response = await return_topic_words_score(word_for_round, audio_input)
@@ -79,7 +79,7 @@ class MatchMaking():
                     # Generate client ID using the username
                     username = data.get("username")
                     client_id = self.generate_client_id(username)
-                    print(f"Assigned Client ID: {client_id}")
+                    print(f"Websocket(): Assigned Client ID: {client_id}")
 
                     # Generate match code and set expiration time
                     match_code = self.generate_match_code()
@@ -87,7 +87,7 @@ class MatchMaking():
                     self.clients[match_code] = {"connections": [(websocket, client_id)], "expiration": expiration_time}
                     response = {"action": "create", "message": "Match code generated", "code": match_code}
                     await websocket.send(json.dumps(response))
-                    print(f"Generated match code {match_code} for Client ID {client_id}")
+                    print(f"Websocket(): Generated match code {match_code} for Client ID {client_id}")
 
                 # Handle join request (Player B)
                 elif data.get("action") == "join" and data.get("code") and data.get("username"):
@@ -104,12 +104,12 @@ class MatchMaking():
                             response = {"status": "error", "message": "Match code expired"}
                             await websocket.send(json.dumps(response))
                             del self.clients[room_code]
-                            print(f"Match code {room_code} expired for Client ID {client_id}")
+                            print(f"Websocket(): Match code {room_code} expired for Client ID {client_id}")
                         # Check if room is full (already 2 players)
                         elif len(room["connections"]) >= 2:
                             response = {"status": "error", "message": "Room is full"}
                             await websocket.send(json.dumps(response))
-                            print(f"Client ID {client_id} tried to join a full room with code {room_code}")
+                            print(f"Websocket(): Client ID {client_id} tried to join a full room with code {room_code}")
                         else:
                             # Add Player B to the room
                             room["connections"].append((websocket, client_id))
@@ -118,23 +118,23 @@ class MatchMaking():
                             # Notify Player A that Player B has joined
                             await room["connections"][0][0].send(json.dumps({"status": "success", "message": "Opponent has joined"}))
                             await self.start_matchmaking_server(room_code)
-                            print(f"Client ID {client_id} joined room with code {room_code}")
+                            print(f"Websocket(): Client ID {client_id} joined room with code {room_code}")
                     else:
                         # Invalid code, reject connection
                         response = {"status": "error", "message": "Invalid access code"}
                         await websocket.send(json.dumps(response))
-                        print(f"Client ID {client_id} entered an invalid code {room_code}")
+                        print(f"Websocket(): Client ID {client_id} entered an invalid code {room_code}")
 
 
         except websockets.ConnectionClosed:
-            print(f"Client ID {client_id} disconnected")
+            print(f"Websocket(): Client ID {client_id} disconnected")
         finally:
     
             pass
 
     # Function to start the matchmaking server
     async def start_matchmaking_server(self,room_code):
-        print(f"Matchmaking process started for room {room_code}")
+        print(f"Websocket(): Matchmaking process started for room {room_code}")
         # Notify both clients that the match is starting
         if len(self.clients[room_code]["connections"]) == 2:
             client1_id = self.clients[room_code]["connections"][0][1]
@@ -142,7 +142,7 @@ class MatchMaking():
             await self.clients[room_code]["connections"][0][0].send(json.dumps({"action": "start", "username1": client1_id, "username2": client2_id,"message": "Match has started!"}))
             await self.clients[room_code]["connections"][1][0].send(json.dumps({"action": "start", "username1": client1_id, "username2": client2_id, "message": "Match has started!"}))
             self.match_code = room_code
-            print(f"Both clients in room {room_code} (Client IDs {client1_id} and {client2_id}) have been notified that the match has started.")
+            print(f"Websocket(): Both clients in room {room_code} (Client IDs {client1_id} and {client2_id}) have been notified that the match has started.")
 
 
 

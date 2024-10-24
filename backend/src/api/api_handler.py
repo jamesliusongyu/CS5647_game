@@ -9,7 +9,7 @@ async def handle_send_input(request):
 
 async def get_topic_words(request):
     # return words based on topic in json format
-    return web.json_response({"words": ["word1", "word2", "word3"]})
+    return web.json_response({"words": ["苹果", "香蕉", "word3"]})
 
 # API function to handle scoring logic (stub implementation)
 async def return_topic_words_score(word: str, audio_input: bytes):

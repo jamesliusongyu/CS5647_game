@@ -1,14 +1,4 @@
-.match-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw; /* Full viewport width */
 
-    background-color: #b590d3; /* Light purple background */
-  }
-  
   .header {
     margin-bottom: 20px;
   }
@@ -26,12 +16,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
     margin-top: 40px;
   }
   
   .player-box {
-    width: 150px;
-    height: 150px;
+    width: 250px;
+    height: 250px;
     background-color: #78E8E6; /* Light blue background */
     display: flex;
     align-items: center;
@@ -46,11 +37,13 @@
   
   .vs {
     font-size: 36px;
+    width: 20%;
     color: #6B48A0;
   }
   
   .countdown {
     margin-top: 30px;
+    width: 100%;
     font-size: 48px;
     color: #6B48A0;
   }

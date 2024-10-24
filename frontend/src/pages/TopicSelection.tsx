@@ -15,20 +15,21 @@ const TopicSelection: React.FC = () => {
   };
 
   return (
-    <div className="topic-selection-container">
-      <div className="header"></div>
-      <h2 className="match-title">NORMAL 1V1</h2>
-      <h3 className="select-topic-text">Select a topic:</h3>
-      <div className="topics-panel">
-        {topics.map((topic, index) => (
-          <div
-            key={index}
-            className={`topic-box ${selectedTopic === topic ? 'selected' : ''}`}
-            onClick={() => handleTopicClick(topic)}
-          >
-            {topic}
-          </div>
-        ))}
+    <div className="box-container">
+      <div className="white-box">
+        <h1>NORMAL 1V1</h1>
+        <h3 className="select-topic-text">Select a topic:</h3>
+        <div className="topics-panel">
+          {topics.map((topic, index) => (
+            <div
+              key={index}
+              className={`topic-box ${selectedTopic === topic ? 'selected' : ''}`}
+              onClick={() => handleTopicClick(topic)}
+            >
+              {topic}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

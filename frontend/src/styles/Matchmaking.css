@@ -10,26 +10,7 @@
     height: 100%; /* Make sure the body takes up the full height */
     font-family: Arial, sans-serif; /* A clean font */
   }
-  
-  .matchmaking-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full viewport height */
-    width: 100vw; /* Full viewport width */
-    background-color: #b590d3; /* Light purple background */
-  }
-  
-  .matchmaking-box {
-    background-color: #e1d5ee; /* Lighter purple for the box */
-    border-radius: 10px;
-    text-align: center;
-    padding: 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 90%; /* Make the box take up a majority of the width */
-    max-width: 500px; /* Limit how wide it can be */
-  }
-  
+
   h2 {
     color: #70528b; /* Slightly darker purple for the heading */
     font-size: 24px;
@@ -37,19 +18,23 @@
   
   .code-box {
     background-color: #d3c5e0;
+    width: 100%;
     padding: 10px;
     border-radius: 5px;
-    margin: 20px 0;
+    margin: 3em 0;
   }
   
   .code-box h1 {
+    width: 100%;
     font-size: 48px;
     color: #4a2e61;
   }
   
   p {
+    width: 100%;
     color: #6b5b85;
     font-size: 18px;
+    font-weight: bold;
   }
   
   .waiting-text {
@@ -58,16 +43,16 @@
   }
   
   .cancel-button {
-    background-color: #f3b6d7; /* Pink cancel button */
+    background-color: #ff89c0; /* Pink cancel button */
     border: none;
     padding: 10px 20px;
     color: white;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
+    margin: 20px auto;
   }
   
   .cancel-button:hover {
-    background-color: #ff89c0; /* Slightly darker pink on hover */
+    background-color: #f3b6d7; /* Slightly lighter pink on hover */
   }
   

@@ -1,26 +1,19 @@
-.topic-selection-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw;
-    background-color: #b590d3; /* Light purple background */
-  }
-  
+ 
   .header {
     height: 50px;
     background-color: #7B519D;
   }
   
-  .match-title {
+  h2.match-title {
     font-size: 36px;
-    color: #D3C0F3;
+    color: #7B519D;
     text-align: center;
     margin-top: 20px;
   }
   
   .select-topic-text {
+    width: 100%;
+    text-align: center;
     font-size: 24px;
     color: #F58CAF;
     margin-bottom: 30px;
@@ -29,13 +22,14 @@
   .topics-panel {
     display: flex;
     justify-content: space-around;
-    width: 50%;
+    width: 100%;
+    padding-bottom: 5%;
   }
   
   .topic-box {
     background-color: #6EE4E8;
-    width: 150px;
-    height: 100px;
+    width: 10em;
+    height: 7em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,7 +41,7 @@
   }
   
   .topic-box:hover {
-    opacity: 0.8;
+    background-color: #41bec2;
   }
   
   .selected {

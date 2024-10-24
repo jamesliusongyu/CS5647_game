@@ -34,17 +34,20 @@ const Login: React.FC = () => {
   }, []);
 
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit} className="white-box">
-        <label>Username</label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder={randomUsername} // Use random username as the placeholder
-        />
-        <button className="accent-button" type="submit">START</button>
-      </form>
+    <div className="box-container">
+      <div className="white-box">
+        <h1>LOGIN</h1>
+          <form onSubmit={handleSubmit}>
+            <label>Username</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder={randomUsername} // Use random username as the placeholder
+            />
+            <button className="accent-button" type="submit">START</button>
+          </form>
+        </div>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 // src/pages/Results.tsx
 import React, { useState, useEffect } from 'react';
 import '../styles/Results.css';
-import ResultsCard from './ResultsCard';
+import ResultsCard from '../components/ResultsCard'
 import { useLocation } from 'react-router-dom';
 import { useWebSocket } from '../contexts/WebSocketContext'; // Assuming you have a WebSocket context
 
