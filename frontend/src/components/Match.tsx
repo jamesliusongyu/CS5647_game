@@ -9,8 +9,9 @@ const Match: React.FC = () => {
   const [localPlayer, setLocalPlayer] = useState<string>('You'); // Local player's name
   const navigate = useNavigate();
   const location = useLocation(); // Use this to get the topic passed from TopicSelection
-  const selectedTopic = location.state?.topic || 'Random'; // Default to "Random" if no topic is selected
-
+  const selectedTopic = location.state?.selectedTopic || 'Random'; // Default to "Random" if no topic is selected
+  const gameCode = location.state?.code || ''; // Default to " " if no code"
+  console.log(gameCode, "gameCode")
   const clientId = localStorage.getItem('client_id') || '';
   const storedUsername = clientId.split('_')[1] || 'You'; // Extract username from client_id
   
@@ -23,7 +24,7 @@ const Match: React.FC = () => {
 
     if (countdown === 0) {
       clearInterval(timer);
-      navigate('/round' ,{ state: { selectedTopic } });
+      navigate('/round' ,{ state: { selectedTopic, gameCode } });
     }
 
     return () => clearInterval(timer); // Cleanup the interval on component unmount
