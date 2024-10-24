@@ -1,89 +1,39 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  /* Ensure padding and borders are included in the width/height */
-}
+/* Resetting margin and padding */
 
-html,
-body {
-  height: 100%;
-  /* Make sure the body takes up the full height */
-  font-family: Arial, sans-serif;
-  /* A clean font */
-  overflow: hidden;
-  /* Prevent horizontal overflow */
-}
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* Align items at the top for vertical scrolling */
-  height: 100vh;
-  width: 100vw;
-  background-color: #b590d3;
-  padding: 20px;
-  overflow-y: auto; /* Enable vertical scrolling */
-}
 
 .white-box {
   background-color: #e1d5ee;
   border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 80%; /* Adjusted for better fit */
+  max-width: 800px;  /* Limit the width to make it more readable */
   padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin-bottom: 20px;
 }
 
 .card {
   background-color: #e1d5ee;
-  border: 5px solid #7B68B2;
+  border: 2px solid #7B68B2;
   border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  margin: 10px 0;
   padding: 20px;
+  margin-bottom: 20px;
 }
 
 .audio-player {
-  margin: 10px;
-  text-align: left;
+  margin-top: 10px;
 }
 
-  .player-result {
-    margin-bottom: 20px;
-  }
-  
-  .panel-container {
-    display: flex;
-    max-width: 100%;
-    align-content: center;
-    justify-content: center;
-  }
-  
-  .panel {
-    width: 45%;
-    /* Each element takes 45% of the container's width */
-    background-color: #e1d5ee;
-    padding: 20px;
-    align-content: center;
-    align-items: start;
-  }
+.result-word {
+  margin-bottom: 10px;
+  color: #70528b;
+}
 
-  .result-word {
-    text-align: start;
-    margin: 0;
-  }
+h1, h3 {
+  color: #70528b;
+}
 
-  .score {
-    display: flex;
-  }
-
-  h3.result-word, h1.pink {
-    color: #ff89c0;
-  }
-
-  
+p {
+  margin-top: 10px;
+  color: #6b5b85;
+}
