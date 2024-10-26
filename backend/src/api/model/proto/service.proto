@@ -1,0 +1,30 @@
+// --------------------------------------------------------------------
+// Author: Xintong WANG
+// Credits: Special thanks to Xintong WANG for her guidance
+//          and contribution to speech assessment model of this project.
+// --------------------------------------------------------------------
+// This code is contributed by Xintong WANG
+
+syntax = "proto3";
+//python -m grpc_tools.protoc --proto_path=./proto/ ./proto/service.proto --python_out=. --grpc_python_out=.
+
+message Request {
+    bytes waveform = 1;
+    string text = 2;
+}
+
+message Response {
+    repeated Character scored_character = 1;
+}
+
+service Service {
+    rpc Recognize(Request) returns (Response);
+};
+
+message Character {
+    repeated string reference_phone = 1;
+    repeated string recognized_phone = 2;
+    repeated float score_phone = 3;
+    string xmin = 4;
+    string xmax = 5;
+}
