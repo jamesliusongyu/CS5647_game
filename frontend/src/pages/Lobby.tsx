@@ -10,6 +10,7 @@ const Lobby: React.FC = () => {
   const socket = useWebSocket(); // Access WebSocket from context
   const navigate = useNavigate();
   const username = localStorage.getItem('username') || 'Player'; // Retrieve username from localStorage or default to 'Player'
+  const gamemode = localStorage.getItem('gamemode') || 'Normal 1v1';
 
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Lobby: React.FC = () => {
         if (data.status === 'success') {
           console.log(inviteCode, "inviteCode")
           // Navigate to the match page on successful room join
-          navigate('/match', { state: { code: inviteCode } });
+          navigate('/match', { state: { code: inviteCode, selectedMode: gamemode } });
         } else if (data.status === 'error') {
           setErrorMessage(data.message); // Display error message on invalid code
         }
@@ -51,7 +52,7 @@ const Lobby: React.FC = () => {
   };
 
   const handleCreateRoom = () => {
-    navigate("/topicselection")
+    navigate("/gamemode")
     // navigate("/matchmaking")
   }
 

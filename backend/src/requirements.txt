@@ -1,0 +1,9 @@
+aiohttp==3.10.9
+aiohttp_cors==0.7.0
+grpcio==1.67.0
+numpy==1.24.1
+protobuf==5.28.3
+pymongo==4.10.1
+python-dotenv==1.0.1
+tqdm==4.66.1
+websockets==13.1

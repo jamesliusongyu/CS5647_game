@@ -10,6 +10,8 @@ const Match: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Use this to get the topic passed from TopicSelection
   const selectedTopic = location.state?.selectedTopic || 'Random'; // Default to "Random" if no topic is selected
+  const selectedMode = location.state?.selectedMode || 'Normal 1v1'; // Default to "Random" if no topic is selected
+  
   const gameCode = location.state?.code || ''; // Default to " " if no code"
   console.log(gameCode, "gameCode")
   const clientId = localStorage.getItem('client_id') || '';
@@ -24,7 +26,7 @@ const Match: React.FC = () => {
 
     if (countdown === 0) {
       clearInterval(timer);
-      navigate('/round' ,{ state: { selectedTopic, gameCode } });
+      navigate('/round' ,{ state: { selectedTopic, selectedMode, gameCode } });
     }
 
     return () => clearInterval(timer); // Cleanup the interval on component unmount
@@ -58,7 +60,7 @@ const Match: React.FC = () => {
   return (
     <div className="box-container">
       <div className="white-box">
-      <h1>NORMAL 1V1</h1>
+      <h1>{selectedMode.toUpperCase()}</h1>
       <div className="match-panel">
         <div className="player-box">
           <div className="player">{localPlayer}</div>

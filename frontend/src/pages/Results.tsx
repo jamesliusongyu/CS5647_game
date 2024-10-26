@@ -8,6 +8,8 @@ import { useWebSocket } from '../contexts/WebSocketContext'; // Assuming you hav
 const Results: React.FC = () => {
     const [results, setResults] = useState<any[]>([]);
     const location = useLocation(); // Use this to get the topic passed from TopicSelection
+    const selectedTopic = location.state?.topic || 'Random'; // Default to "Random" if no topic is selected
+    const selectedMode = location.state?.selectedMode || 'Normal 1v1'; // Default to "Random" if no topic is selected
 
     const gameCode = location.state?.gameCode || ''; // Default to " " if no code"
     // WebSocket setup
@@ -103,7 +105,7 @@ const Results: React.FC = () => {
     return (
         <div className="container">
           <div className="white-box">
-            <h1>Results</h1>
+            <h1>Results: {selectedMode.toUpperCase()}</h1>
             {results && results.length > 0 ? (
               results.map((item, index) => (
                 <ResultsCard

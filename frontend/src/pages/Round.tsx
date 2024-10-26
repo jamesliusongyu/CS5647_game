@@ -16,6 +16,7 @@ const Round: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false); // To show loading spinner
   const location = useLocation(); // Use this to get the topic passed from TopicSelection
   const selectedTopic = location.state?.selectedTopic || 'Random'; // Default to "Random" if no topic is selected
+  const selectedMode = location.state?.selectedMode || 'Normal 1v1'; // Default to "Random" if no topic is selected
   const gameCode = location.state?.gameCode || ''; // Default to " " if no code"
   const navigate = useNavigate();
 
@@ -141,14 +142,14 @@ const Round: React.FC = () => {
       setScore(null);
     } else {
         console.log("All words completed");
-        navigate('/results', {state: {code: gameCode}});
+        navigate('/results', {state: {selectedMode, selectedTopic, code: gameCode}});
       }
 };
 
   return (
     <div className="box-container">
       <div className="white-box">
-        <h1>NORMAL 1V1</h1>
+        <h1>{selectedMode.toUpperCase()}</h1>
 
         <div className="progress-indicator">
           <span className="dot"></span>
