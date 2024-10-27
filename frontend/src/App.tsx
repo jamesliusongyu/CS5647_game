@@ -11,6 +11,7 @@ import Round from './pages/Round';
 import { WebSocketProvider } from './contexts/WebSocketContext';
 import Results from './pages/Results';
 import Logo from './components/Logo';
+import ModeSelection from './pages/ModeSelection';
 
 const App: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/results" Component={Results} />
         <Route path="/matchmaking" Component={Matchmaking} />
+        <Route path="/gamemode" Component={ModeSelection} />
         <Route path="/topicselection" Component={TopicSelection} />
         <Route path="/round" Component={Round} />
         <Route path="/match" Component={Match} />

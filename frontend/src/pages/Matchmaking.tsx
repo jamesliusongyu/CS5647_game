@@ -12,6 +12,7 @@ const Matchmaking: React.FC = () => {
   const [players, setPlayers] = useState<number>(1);
   const username = localStorage.getItem('username') || 'Player'; // Retrieve username from localStorage or default to 'Player'
   const selectedTopic = location.state?.topic || 'Random'; // Default to "Random" if no topic is selected
+  const selectedMode = location.state?.selectedMode || 'Normal 1v1'; // Default to "Random" if no topic is selected
 
 
 
@@ -22,6 +23,7 @@ const Matchmaking: React.FC = () => {
         action: 'create',
         username: username,
         topic: selectedTopic,
+        gamemode: selectedMode
       });
       socket.send(message);
 
@@ -35,7 +37,7 @@ const Matchmaking: React.FC = () => {
         if (data.status === 'success') {
           // Navigate to the match page on success
           setPlayers(2)
-          navigate('/match',{ state: { selectedTopic, code } });
+          navigate('/match',{ state: { selectedTopic, selectedMode, code } });
         } else if (data.status === 'error') {
           console.error(data.message); // Handle error message
         }
@@ -56,7 +58,7 @@ const Matchmaking: React.FC = () => {
   return (
     <div className="box-container">
       <div className="white-box">
-        <h1>NORMAL 1V1</h1>
+        <h1>{selectedMode.toUpperCase()}</h1>
         <div className="code-box">
           <h1>{code || 'Loading...'}</h1>
         </div>
