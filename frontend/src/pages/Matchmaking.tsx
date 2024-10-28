@@ -13,6 +13,7 @@ const Matchmaking: React.FC = () => {
   const username = localStorage.getItem('username') || 'Player'; // Retrieve username from localStorage or default to 'Player'
   const selectedTopic = location.state?.topic || 'Random'; // Default to "Random" if no topic is selected
   const selectedMode = location.state?.selectedMode || 'Normal 1v1'; // Default to "Random" if no topic is selected
+  const role = location.state?.role || 'q'; // Default to "Random" if no topic is selected
 
 
 
@@ -37,7 +38,7 @@ const Matchmaking: React.FC = () => {
         if (data.status === 'success') {
           // Navigate to the match page on success
           setPlayers(2)
-          navigate('/match',{ state: { selectedTopic, selectedMode, code } });
+          navigate('/match',{ state: { selectedTopic, selectedMode, code, role } });
         } else if (data.status === 'error') {
           console.error(data.message); // Handle error message
         }

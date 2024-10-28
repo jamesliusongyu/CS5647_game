@@ -3,10 +3,10 @@ import { useWebSocket } from '../contexts/WebSocketContext'; // Assuming you hav
 import '../styles/Round.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const Round: React.FC = () => {
+const DialogueRound: React.FC = () => {
   const [countdown, setCountdown] = useState<number>(5); // 5-second countdown for recording
   const [words, setWords] = useState<string[]>([]); // State to hold the array of words
-  const [currentWordIndex, setCurrentWordIndex] = useState<number>(0); // Track the current word's index
+  const [currentDialogueIndex, setCurrentDialogueIndex] = useState<number>(0);
   const [isRecording, setIsRecording] = useState<boolean>(false); // Whether the user is currently recording
   const mediaRecorderRef = useRef<MediaRecorder | null>(null); // Ref to hold the MediaRecorder instance
   const [audioURL, setAudioURL] = useState<string | null>(null); // To store the recorded audio URL
@@ -18,23 +18,29 @@ const Round: React.FC = () => {
   const selectedTopic = location.state?.selectedTopic || 'Random'; // Default to "Random" if no topic is selected
   const selectedMode = location.state?.selectedMode || 'Normal 1v1'; // Default to "Random" if no topic is selected
   const gameCode = location.state?.gameCode || ''; // Default to " " if no code"
+  const playerRole = location.state?.role || 'q'; // Default to "Random" if no topic is selected
+  const [dialogues, setDialogues] = useState<{ role: string; text: string }[]>([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch the words when the component mounts
+    // Fetch the dialogue data on mount
     const callGetTopicWordsAPI = async () => {
       try {
-          const response = await fetch('http://localhost:8080/get_normal_1v1_words'); // Call your backend API
-          const data = await response.json(); // Parse the JSON response
-          setWords(data.words); // Assuming data.words is the array of words
+        const response = await fetch('http://localhost:8080/get_dialogue_1v1_words');
+        const data = await response.json();
+        console.log(data);
+        setDialogues(data.dialogues);
       } catch (error) {
         console.error("Error calling API:", error);
-        setWords(['Error']); // Set a default word if there's an error
+        setDialogues([{ role: playerRole, text: 'Error' }]);
       }
     };
 
     callGetTopicWordsAPI();
-  }, []);
+  }, [playerRole]);
+
+  const filteredDialogues = dialogues.filter(d => d.role === playerRole);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -42,29 +48,25 @@ const Round: React.FC = () => {
       timer = setInterval(() => {
         setCountdown((prevCountdown) => {
           if (prevCountdown > 1) return prevCountdown - 1;
-          stopRecording(); // Automatically stop recording when the countdown reaches 0
+          stopRecording();
           return 0;
         });
       }, 1000);
     }
-
-    return () => clearInterval(timer); // Cleanup on component unmount
+    return () => clearInterval(timer);
   }, [isRecording]);
 
   async function sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  // Listen to WebSocket for score response
   useEffect(() => {
     if (socket) {
       socket.onmessage = async (event: MessageEvent) => {
         const data = JSON.parse(event.data);
         if (data.action === 'score') {
-          // wait 2 seconds to demonstrate the loading works
           await sleep(2000);
-
-          setIsLoading(false); // Stop loading once the score is received
+          setIsLoading(false);
           openScoreModal(data.score);
         }
       };
@@ -77,7 +79,7 @@ const Round: React.FC = () => {
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
       setIsRecording(true);
-      setCountdown(5); // Reset the countdown to 5 seconds
+      setCountdown(5);
 
       mediaRecorder.start();
 
@@ -89,27 +91,23 @@ const Round: React.FC = () => {
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
         const audioURL = URL.createObjectURL(audioBlob);
-        setAudioURL(audioURL); // Set the audio URL for playback
+        setAudioURL(audioURL);
         setIsRecording(false);
 
-        // Convert Blob to Base64
         const reader = new FileReader();
-        reader.readAsDataURL(audioBlob); // This will read the blob as a base64-encoded string
+        reader.readAsDataURL(audioBlob);
         reader.onloadend = () => {
-          const base64Audio = reader.result?.toString().split(',')[1]; // Extract the base64-encoded part
+          const base64Audio = reader.result?.toString().split(',')[1];
           if (base64Audio) {
-            // Create the JSON message to include the word and the base64 audio
             const message = {
               action: 'audio_input',
-              word: words[currentWordIndex],
-              audio: base64Audio, // Send audio as Base64
+              word: filteredDialogues[currentDialogueIndex].text,
+              audio: base64Audio,
             };
-
-            // Send the JSON object via WebSocket
             if (socket && socket.readyState === WebSocket.OPEN) {
               socket.send(JSON.stringify(message));
-              console.log('Audio and word sent via WebSocket :' + currentWordIndex);
-              setIsLoading(true); // Start loading after sending audio
+              console.log('Audio and word sent via WebSocket');
+              setIsLoading(true);
             } else {
               console.error('WebSocket connection is not open');
             }
@@ -123,68 +121,51 @@ const Round: React.FC = () => {
 
   const stopRecording = () => {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-      mediaRecorderRef.current.stop(); // Stop recording
+      mediaRecorderRef.current.stop();
     }
   };
 
-  // Open modal to display the score
   const openScoreModal = (receivedScore: number) => {
     setScore(receivedScore);
     setIsModalOpen(true);
   };
 
-  // Close the modal
   const closeModal = () => {
     setIsModalOpen(false);
-    if (currentWordIndex < words.length - 1) {
-      setCurrentWordIndex(currentWordIndex + 1); // move to the next word
+    if (currentDialogueIndex < filteredDialogues.length - 1) {
+      setCurrentDialogueIndex(currentDialogueIndex + 1);
       setAudioURL(null);
       setScore(null);
     } else {
-        console.log("All words completed");
-        navigate('/results', {state: {selectedMode, selectedTopic, code: gameCode}});
-      }
-};
+      console.log("All dialogues completed");
+      navigate('/results', { state: { selectedMode, selectedTopic, code: gameCode } });
+    }
+  };
 
   return (
     <div className="box-container">
       <div className="white-box">
         <h1>{selectedMode.toUpperCase()}</h1>
-
-        <div className="progress-indicator">
-          <span className="dot"></span>
-          <span className="dot"></span>
-          <span className="dot"></span>
-        </div>
-
-        <h3 className="instruction-text">Pronounce this word:</h3>
-
+        <h3 className="instruction-text">Pronounce this sentence:</h3>
         <div className="word-box">
-          <h1>{words.length > 0 ? words[currentWordIndex] : 'Loading...'}</h1> {/* Display the current word */}
+          <h1>{filteredDialogues.length > 0 ? filteredDialogues[currentDialogueIndex].text : 'Loading...'}</h1>
         </div>
-
         <div>
           <div className="countdown-circle">
             <span>{countdown}</span>
           </div>
         </div>
-
-        {/* Button to start recording */}
         <div>
           <button className="record-button" onClick={startRecording} disabled={isRecording || isLoading}>
             {isRecording ? 'Recording...' : 'Start Recording'}
           </button>
         </div>
-
-        {/* Display the recorded audio */}
         {audioURL && (
           <div className="round audio-player">
             <audio controls src={audioURL} />
           </div>
         )}
       </div>
-
-      {/* Loading spinner modal */}
       {isLoading && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -193,8 +174,6 @@ const Round: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* Modal for displaying score */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -207,4 +186,4 @@ const Round: React.FC = () => {
   );
 };
 
-export default Round;
+export default DialogueRound;

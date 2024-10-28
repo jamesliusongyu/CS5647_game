@@ -12,9 +12,22 @@ async def handle_send_input(request):
     return web.Response(text="Hello, World!")
 
 
-async def get_topic_words(request):
+async def get_normal_1v1_words(request):
     # return words based on topic in json format
     return web.json_response({"words": ["苹果", "香蕉", "word3"]})
+
+async def get_dialogue_1v1_words(request):
+    # return words based on topic in json format
+    return web.json_response({
+        "dialogues": [
+            {"role": "question", "text": "how are you?"},
+            {"role": "answer", "text": "i am fine"},
+            {"role": "question", "text": "what are you doing now?"},
+            {"role": "answer", "text": "i am studying"},
+            {"role": "question", "text": "what is your favourite food?"},
+            {"role": "answer", "text": "my favourite food is pizza"}
+        ]
+    })
 
 # API function to handle scoring logic (stub implementation)
 async def return_topic_words_score(word: str, audio_input: bytes):
