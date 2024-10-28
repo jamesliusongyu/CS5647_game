@@ -24,7 +24,8 @@ const Lobby: React.FC = () => {
         if (data.status === 'success') {
           console.log(inviteCode, "inviteCode")
           // Navigate to the match page on successful room join
-          navigate('/match', { state: { code: inviteCode, selectedMode: gamemode } });
+          const role = "answer"
+          navigate('/match', { state: { code: inviteCode, selectedMode: gamemode , role} });
         } else if (data.status === 'error') {
           setErrorMessage(data.message); // Display error message on invalid code
         }

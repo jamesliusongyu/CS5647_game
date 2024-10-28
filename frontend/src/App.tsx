@@ -12,6 +12,7 @@ import { WebSocketProvider } from './contexts/WebSocketContext';
 import Results from './pages/Results';
 import Logo from './components/Logo';
 import ModeSelection from './pages/ModeSelection';
+import DialogueRound from './pages/DialogueRound';
 
 const App: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const App: React.FC = () => {
         <Route path="/gamemode" Component={ModeSelection} />
         <Route path="/topicselection" Component={TopicSelection} />
         <Route path="/round" Component={Round} />
+        <Route path="/dialogue_round" Component={DialogueRound} />
         <Route path="/match" Component={Match} />
         <Route path="/lobby" Component={Lobby} />
         <Route path="/" Component={Login} />

@@ -12,8 +12,9 @@ const TopicSelection: React.FC = () => {
 
   const handleTopicClick = (topic: string) => {
     setSelectedTopic(topic);
+    const role = "question"
     // Navigate to matchmaking and pass the selected topic
-    navigate('/matchmaking', { state: { topic, selectedMode } });
+    navigate('/matchmaking', { state: { topic, selectedMode, role } });
   };
 
   return (

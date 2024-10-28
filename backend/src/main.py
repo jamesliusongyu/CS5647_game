@@ -3,7 +3,7 @@ import asyncio
 from aiohttp import web
 import websockets
 
-from api.api_handler import get_topic_words, handle_send_input
+from api.api_handler import get_normal_1v1_words, handle_send_input, get_dialogue_1v1_words
 from cors.cors_setup import configure_cors
 from matchmaking.matchmaking_handler import MatchMaking
 
@@ -14,7 +14,9 @@ def setup_http_server():
 
     # Set up the HTTP routes
     app.router.add_get('/send_input', handle_send_input)
-    app.router.add_get('/get_topic_words', get_topic_words)
+    app.router.add_get('/get_normal_1v1_words', get_normal_1v1_words)
+    app.router.add_get('/get_dialogue_1v1_words', get_dialogue_1v1_words)
+
     app.router.add_get('/results', backend_handler.get_results)
 
 
