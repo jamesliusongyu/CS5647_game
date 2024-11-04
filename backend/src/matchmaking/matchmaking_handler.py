@@ -54,7 +54,7 @@ class MatchMaking():
 
                     # Call the return_topic_words_score with the current word and audio input
                     score_response = await return_topic_words_score(word_for_round, audio_input)
-                    # Roy: persisted the score_response to the database
+                    # persisted the score_response to the database
                     persisted_data = {
                         "match_code": self.match_code,
                         "client_id": client_id,
