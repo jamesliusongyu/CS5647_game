@@ -1,10 +1,13 @@
 # src/api/api_handler.py
 import base64
-import json
+import random
 
 from aiohttp import web
+
 from .audio_converter import convert_webm_to_wav
 from .model.model_caller import make_grpc_request
+from .vocab import NORMAL_VOCAB, DIALOG_VOCAB
+
 
 # HTTP API handler
 async def handle_send_input(request):
@@ -14,20 +17,17 @@ async def handle_send_input(request):
 
 async def get_normal_1v1_words(request):
     # return words based on topic in json format
-    return web.json_response({"words": ["苹果", "香蕉", "word3"]})
+    # get topic from request query
+    topic = request.query.get("topic")
+    return web.json_response(random.sample(NORMAL_VOCAB[topic], 3))
+
 
 async def get_dialogue_1v1_words(request):
     # return words based on topic in json format
-    return web.json_response({
-        "dialogues": [
-            {"role": "question", "text": "how are you?"},
-            {"role": "answer", "text": "i am fine"},
-            {"role": "question", "text": "what are you doing now?"},
-            {"role": "answer", "text": "i am studying"},
-            {"role": "question", "text": "what is your favourite food?"},
-            {"role": "answer", "text": "my favourite food is pizza"}
-        ]
-    })
+    # get topic from request query
+    topic = request.query.get("topic")
+    return web.json_response({"dialogues": random.sample(DIALOG_VOCAB[topic], 1)[0]})
+
 
 # API function to handle scoring logic (stub implementation)
 async def return_topic_words_score(word: str, audio_input: bytes):
@@ -41,10 +41,10 @@ async def return_topic_words_score(word: str, audio_input: bytes):
     # Make a gRPC request to the model server and get the average score
     response = await make_grpc_request(word, wav)
     print(response)
-    
+
     # Simulate scoring based on the word and audio input (to be replaced with actual logic)
-    print(f"Scoring for word '{word}' with audio input of size {len(audio_input)/1024/1024} megabytes")
-    #return {"word": word, "score": 100}  # Return a dummy score of 100 for now
+    print(f"Scoring for word '{word}' with audio input of size {len(audio_input) / 1024 / 1024} megabytes")
+    # return {"word": word, "score": 100}  # Return a dummy score of 100 for now
 
     base64_audio = base64.b64encode(wav).decode('utf-8')
 
@@ -60,4 +60,3 @@ async def return_topic_words_score(word: str, audio_input: bytes):
     }
 
     return json_data
-
