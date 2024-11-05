@@ -186,8 +186,8 @@ class MatchMaking():
             ...
         ]
         """
-        # match_code = self.match_code
-        match_code = 'dyMBAd'
+        match_code = self.match_code
+        # match_code = 'dyMBAd'
 
         if not match_code:
             return web.json_response({"error": "Match code not provided"}, status=400)
@@ -284,8 +284,8 @@ class MatchMaking():
             ...
         ]
         """
-        # match_code = self.match_code or request.query.get("match_code")
-        match_code = 'a8OWea'  # Hardcoded for example; remove in production
+        match_code = self.match_code or request.query.get("match_code")
+        # match_code = 'a8OWea'  # Hardcoded for example; remove in production
 
         if not match_code:
             return web.json_response({"error": "Match code not provided"}, status=400)
