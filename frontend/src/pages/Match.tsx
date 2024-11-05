@@ -15,6 +15,7 @@ const Match: React.FC = () => {
 
   const gameCode = location.state?.code || ''; // Default to " " if no code"
   console.log(gameCode, "gameCode")
+  console.log(selectedTopic, "selectedTopic")
   const clientId = localStorage.getItem('client_id') || '';
   const storedUsername = clientId.split('_')[1] || 'You'; // Extract username from client_id
   

@@ -17,6 +17,7 @@ class MatchMaking():
         # Dictionary to track rooms and their clients, along with expiration time and client ID
         self.clients = {}
         self.match_code = None
+        self.topic = None
         self.EXPIRATION_TIME = 300  # 5 minutes for match code to expire (in seconds)
         self.persistence = DBHandler()
         self.persistence.ping_server()
@@ -37,6 +38,7 @@ class MatchMaking():
         print(f"Websocket(): New connection established")
         match_code = None
         username = None
+        topic = None
 
         try:
             # Keep connection alive, wait for messages
@@ -55,15 +57,29 @@ class MatchMaking():
                     # Call the return_topic_words_score with the current word and audio input
                     score_response = await return_topic_words_score(word_for_round, audio_input)
                     # persisted the score_response to the database
-                    persisted_data = {
-                        "match_code": self.match_code,
-                        "client_id": client_id,
-                        "username": username if username else client_id.split('_')[1],
-                        "game_mode": "normal",
-                        "word": word_for_round,
-                        "audio": audio_input,
-                        "score": score_response['score'],
-                    }
+
+                    if data.get("gameMode") == "Normal 1v1":
+                        persisted_data = {
+                            "match_code": self.match_code,
+                            "client_id": client_id,
+                            "username": username if username else client_id.split('_')[1],
+                            "game_mode": "normal",
+                            "word": word_for_round,
+                            "audio": audio_input,
+                            "score": score_response['score'],
+                        }
+                    else:
+                        persisted_data = {
+                            "match_code": self.match_code,
+                            "client_id": client_id,
+                            "username": username if username else client_id.split('_')[1],
+                            "game_mode": "dialogue",
+                            "order" : data.get("order"),
+                            "playerRole" : data.get("playerRole"),
+                            "word": word_for_round,
+                            "audio": audio_input,
+                            "score": score_response['score'],
+                        }
                     self.persistence.insert_data("scores", persisted_data)
 
                     # Send the score back to the client
@@ -75,12 +91,15 @@ class MatchMaking():
 
 
                 # Handle room creation request (Player A)
-                if data.get("action") == "create" and data.get("username"):
+                if data.get("action") == "create" and data.get("username") and data.get("topic"):
                     # Generate client ID using the username
                     username = data.get("username")
                     client_id = self.generate_client_id(username)
                     print(f"Websocket(): Assigned Client ID: {client_id}")
 
+                    # adds topic
+                    self.topic = data.get("topic")
+                    print (self.topic, "topic")
                     # Generate match code and set expiration time
                     match_code = self.generate_match_code()
                     expiration_time = time.time() + self.EXPIRATION_TIME
@@ -113,7 +132,7 @@ class MatchMaking():
                         else:
                             # Add Player B to the room
                             room["connections"].append((websocket, client_id))
-                            response = {"status": "success", "message": "Joined the room"}
+                            response = {"status": "success", "topic":self.topic, "message": "Joined the room"}
                             await websocket.send(json.dumps(response))
                             # Notify Player A that Player B has joined
                             await room["connections"][0][0].send(json.dumps({"status": "success", "message": "Opponent has joined"}))
@@ -167,7 +186,8 @@ class MatchMaking():
             ...
         ]
         """
-        match_code = self.match_code
+        # match_code = self.match_code
+        match_code = 'dyMBAd'
 
         if not match_code:
             return web.json_response({"error": "Match code not provided"}, status=400)
@@ -179,24 +199,31 @@ class MatchMaking():
             return web.json_response({"error": "No results found for the match code"}, status=404)
 
         # Get sample audios for the words used in this match
-        samples_data = self.persistence.load_data("samples", {"word": {"$in": [datum['word'] for datum in data]}})
-
+        samples_data = self.persistence.load_data("samples", {"word": {"$in": [datum['word']['text'] for datum in data]}})
+        print (samples_data, "samples_data")
         sample_map = {datum["word"]: base64.b64encode(datum["audio"]).decode('utf-8') for datum in samples_data}
 
         # Process data for each word and both players
         word_results = {}
         for datum in data:
-            word = datum['word']
+            print(datum['word'], "datum")
+            
+            # Extract word details
+            word_text = datum['word']['text']
+            pinyin = datum['word']['pinyin']
             username = datum['username']
 
-            if word not in word_results:
-                word_results[word] = {
-                    "word": word,
-                    "sample": sample_map.get(word, ""),  # Attach the sample audio for the word
+            # Check if the word_text is already in word_results
+            if word_text not in word_results:
+                word_results[word_text] = {
+                    "word": word_text,
+                    "pinyin": pinyin,  # Add pinyin to the result
+                    "sample": sample_map.get(word_text, ""),  # Attach the sample audio for the word
                     "player1": None,
                     "player2": None
                 }
 
+            # Prepare player data
             player_data = {
                 "username": username,
                 "audio": base64.b64encode(datum["audio"]).decode('utf-8'),
@@ -204,20 +231,130 @@ class MatchMaking():
             }
 
             # Assign data to player1 or player2 based on first availability
-            if word_results[word]["player1"] is None:
-                word_results[word]["player1"] = player_data
+            if word_results[word_text]["player1"] is None:
+                word_results[word_text]["player1"] = player_data
             else:
-                word_results[word]["player2"] = player_data
+                word_results[word_text]["player2"] = player_data
 
         # Collect all word results into the final result list
         result = list(word_results.values())
-
         # Check if there are 3 words and both players' data for the last word is available
         if len(result) == 3 and result[-1]["player1"] is not None and result[-1]["player2"] is not None:
             # When result is complete for both players, send to all clients via WebSocket
             clients_in_room = self.clients.get(match_code, {}).get("connections", [])
             print(clients_in_room, "clients_in_room")
             # Send the result data to both clients in the room
+            for websocket, client_id in clients_in_room:
+                await websocket.send(json.dumps({
+                    "action": "results",
+                    "match_code": match_code,
+                    "results": result
+                }))
+            print(f"Results sent to both players for match_code {match_code}")
+
+        return web.json_response(result)
+
+
+    async def get_dialogue_results(self, request):
+        """
+        :param request: contains "match_code" as a query parameter
+        :return: [
+            {
+                "player1": {
+                    "username": "username1",
+                    "audio": "base64_audio_1",
+                    "score1": score1,
+                    "word": "word1",
+                    "sample": "sample_audio",
+                    "pinyin": "asd",
+                    "order": 1,
+                    "playerRole": "question"
+                },
+                "player2": {
+                    "username": "username2",
+                    "audio": "base64_audio_2",
+                    "score1": score1,
+                    "word": "word1",
+                    "sample": "sample_audio",
+                    "pinyin": "asd",
+                    "order": 1,
+                    "playerRole": "answer"
+                }
+            },
+            ...
+        ]
+        """
+        # match_code = self.match_code or request.query.get("match_code")
+        match_code = 'a8OWea'  # Hardcoded for example; remove in production
+
+        if not match_code:
+            return web.json_response({"error": "Match code not provided"}, status=400)
+
+        # Retrieve data for the match_code
+        data = self.persistence.load_data("scores", {"match_code": match_code})
+        if not data:
+            return web.json_response({"error": "No results found for the match code"}, status=404)
+
+        # Retrieve sample audios for the words used in this match
+        filter_words = [datum['word']['text'][2:] if datum['word']['text'][1] == ':' else datum['word']['text'] for datum in data]
+        samples_data = self.persistence.load_data("samples", {"word": {"$in": filter_words}})
+        # samples_data = self.persistence.load_data("samples", {"word": {"$in": [datum['word']['text'] for datum in data]}})
+        # print (len(samples_data))
+        sample_map = {datum["word"].strip(): base64.b64encode(datum["audio"]).decode('utf-8') for datum in samples_data}
+        # print (len(sample_map))
+        word_results = {}
+        for datum in data:
+            # Extract details
+            word_text = datum['word']['text']
+
+            #remove the A: or B:
+            if word_text[1] == ":":
+                word_text_clean = word_text[2:].strip()  
+            print (word_text)
+            print (word_text_clean)
+
+            pinyin = datum['word']['pinyin']
+            username = datum['username']
+            order = datum['order']
+            player_role = datum['playerRole']
+
+            # Initialize word entry if not already present
+            if order not in word_results:
+                # print("Sample map keys:", list(sample_map.keys()))
+                # print (sample_map.get(""+word_text_clean, ""), "asd")
+                word_results[order] = {
+                    "word": word_text,
+                    "pinyin": pinyin,
+                    "sample": sample_map.get(word_text_clean, ""),
+                    "player1": None,
+                    "player2": None,
+                    "order": order
+                }
+
+            # Prepare player data
+            player_data = {
+                "username": username,
+                "audio": base64.b64encode(datum["audio"]).decode('utf-8'),
+                "score1": datum.get("score"),
+                "word": word_text,
+                "sample": sample_map.get(word_text_clean, ""),
+                "pinyin": pinyin,
+                "order": order,
+                "playerRole": player_role
+            }
+
+            # Assign data to player1 or player2 based on availability and role
+            if word_results[order]["player1"] is None and player_role == "question":
+                word_results[ order]["player1"] = player_data
+            elif word_results[ order]["player2"] is None and player_role == "answer":
+                word_results[ order]["player2"] = player_data
+
+        # Format the final result as required
+        result = [{"player1": value["player1"], "player2": value["player2"]} for value in word_results.values()]
+
+        # Send results to both clients if complete
+        if result[-1]["player1"] and result[-1]["player2"]:
+            clients_in_room = self.clients.get(match_code, {}).get("connections", [])
             for websocket, client_id in clients_in_room:
                 await websocket.send(json.dumps({
                     "action": "results",

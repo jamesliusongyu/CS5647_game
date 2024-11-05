@@ -6,13 +6,18 @@ const TopicSelection: React.FC = () => {
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const selectedMode = location.state?.mode || 'Normal 1v1'; // Default to "Random" if no topic is selected
+  const selectedMode = location.state?.mode || 'Normal 1v1'; // Default to "Normal 1v1" if no mode is provided
 
-  const topics = ['Random', 'Travel', 'Food'];
+  // Define topic sets
+  const normalVocabTopics = ['Education', 'Work', 'Health', 'Travel', 'Culture', 'Technology', 'Environment', 'Food'];
+  const dialogueVocabTopics = ['Health', 'Work', 'Food', 'Culture', 'Travel'];
+
+  // Determine which topics to display based on selectedMode
+  const topics = selectedMode === 'Normal 1v1' ? normalVocabTopics : dialogueVocabTopics;
 
   const handleTopicClick = (topic: string) => {
     setSelectedTopic(topic);
-    const role = "question"
+    const role = "question";
     // Navigate to matchmaking and pass the selected topic
     navigate('/matchmaking', { state: { topic, selectedMode, role } });
   };

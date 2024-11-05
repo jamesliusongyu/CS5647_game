@@ -1,9 +1,9 @@
 NORMAL_VOCAB = {
-    "education": [
+    "Education": [
         {'text': '教育', 'pinyin': 'jiào yù'},
         {'text': '学校', 'pinyin': 'xué xiào'},
         {'text': '学习', 'pinyin': 'xué xí'},
-        {'text': '教 师', 'pinyin': 'jiào shī'},
+        {'text': '教师', 'pinyin': 'jiào shī'},
         {'text': '课程', 'pinyin': 'kè chénɡ'},
         {'text': '考试', 'pinyin': 'kǎo shì'},
         {'text': '学生', 'pinyin': 'xué shēnɡ'},
@@ -21,7 +21,7 @@ NORMAL_VOCAB = {
         {'text': '学习方法', 'pinyin': 'xué xí fānɡ fǎ'},
         {'text': '学习环境', 'pinyin': 'xué xí huán jìnɡ'}
     ],
-    "work": [
+    "Work": [
         {'text': '职业', 'pinyin': 'zhí yè'},
         {'text': '工作', 'pinyin': 'ɡōnɡ zuò'},
         {'text': '职位', 'pinyin': 'zhí wèi'},
@@ -42,7 +42,7 @@ NORMAL_VOCAB = {
         {'text': '竞争', 'pinyin': 'jìnɡ zhēnɡ'},
         {'text': '职场文化', 'pinyin': 'zhí chǎnɡ wén huà'}
     ],
-    "health": [
+    "Health": [
         {'text': '健康', 'pinyin': 'jiàn kānɡ'},
         {'text': '饮食', 'pinyin': 'yǐn shí'},
         {'text': '锻炼', 'pinyin': 'duàn liàn'},
@@ -65,7 +65,7 @@ NORMAL_VOCAB = {
         {'text': '药物', 'pinyin': 'yào wù'}
     ]
     ,
-    "travel": [
+    "Travel": [
         {'text': '旅行', 'pinyin': 'lǚ xínɡ'},
         {'text': '目的地', 'pinyin': 'mù dì dì'},
         {'text': '行程', 'pinyin': 'xínɡ chénɡ'},
@@ -87,7 +87,7 @@ NORMAL_VOCAB = {
         {'text': '旅行团', 'pinyin': 'lǚ xínɡ tuán'},
         {'text': '旅行日志', 'pinyin': 'lǚ xínɡ rì zhì'}
     ],
-    "culture": [
+    "Culture": [
         {'text': '文化', 'pinyin': 'wén huà'},
         {'text': '传统', 'pinyin': 'chuán tǒnɡ'},
         {'text': '节日', 'pinyin': 'jié rì'},
@@ -106,7 +106,7 @@ NORMAL_VOCAB = {
         {'text': '宗教', 'pinyin': 'zōnɡ jiào'},
         {'text': '文化差异', 'pinyin': 'wén huà chā yì'}
     ],
-    "technology": [
+    "Technology": [
         {'text': '科技', 'pinyin': 'kē jì'},
         {'text': '互联网', 'pinyin': 'hù lián wǎnɡ'},
         {'text': '社交媒体', 'pinyin': 'shè jiāo méi tǐ'},
@@ -128,7 +128,7 @@ NORMAL_VOCAB = {
         {'text': '计算机', 'pinyin': 'jì suàn jī'},
         {'text': '科学', 'pinyin': 'kē xué'}
     ],
-    "environment": [
+    "Environment": [
         {'text': '环境', 'pinyin': 'huán jìnɡ'},
         {'text': '自然', 'pinyin': 'zì rán'},
         {'text': '保护', 'pinyin': 'bǎo hù'},
@@ -150,7 +150,7 @@ NORMAL_VOCAB = {
         {'text': '保护区', 'pinyin': 'bǎo hù qū'},
         {'text': '生态平衡', 'pinyin': 'shēnɡ tài pínɡ hénɡ'}
     ],
-    "food": [
+    "Food": [
         {'text': '水果', 'pinyin': 'shuǐ ɡuǒ'},
         {'text': '苹果', 'pinyin': 'pínɡ ɡuǒ'},
         {'text': '香蕉', 'pinyin': 'xiānɡ jiāo'},
@@ -165,30 +165,30 @@ NORMAL_VOCAB = {
 }
 
 DIALOG_VOCAB = {
-    "health": [
+    "Health": [
         [
-            {'text': 'A：你平时如何保持健康？',
+            {'text': 'A: 你平时如何保持健康？',
              'role': 'question',
              'pinyin': 'nǐ pínɡ shí rú hé bǎo chí jiàn kānɡ？'},
-            {'text': 'B:我每天都去健身房锻炼',
+            {'text': 'B: 我每天都去健身房锻炼',
              'role': 'answer',
              'pinyin': 'wǒ měi tiān dōu qù jiàn shēn fánɡ duàn liàn'},
-            {'text': 'A：听起来不错！你觉得锻炼对你有什么好处？',
+            {'text': 'A: 听起来不错！你觉得锻炼对你有什么好处？',
              'role': 'question',
              'pinyin': 'tīnɡ qǐ lái bú cuò！nǐ jué de duàn liàn duì nǐ yǒu shén me hǎo chù'},
-            {'text': 'B：我觉得锻炼让我精力充沛',
+            {'text': 'B: 我觉得锻炼让我精力充沛',
              'role': 'answer',
              'pinyin': 'wǒ jué de duàn liàn rànɡ wǒ jīnɡ lì chōnɡ pèi'},
-            {'text': 'A：你通常锻炼多长时间？',
+            {'text': 'A: 你通常锻炼多长时间？',
              'role': 'question',
              'pinyin': 'nǐ tōnɡ chánɡ duàn liàn duō chánɡ shí jiān？'},
-            {'text': 'B：我一般锻炼一个小时',
+            {'text': 'B: 我一般锻炼一个小时',
              'role': 'answer',
              'pinyin': 'wǒ yì bān duàn liàn yí ɡè xiǎo shí'},
-            {'text': 'A：饮食方面你有什么特别注意的吗？',
+            {'text': 'A: 饮食方面你有什么特别注意的吗？',
              'role': 'question',
              'pinyin': 'yǐn shí fānɡ miàn nǐ yǒu shén me tè bié zhù yì de mɑ？'},
-            {'text': 'B：我尽量多吃蔬菜和水果，少吃快餐',
+            {'text': 'B: 我尽量多吃蔬菜和水果，少吃快餐',
              'role': 'answer',
              'pinyin': 'wǒ jìn liànɡ duō chī shū cài hé shuǐ ɡuǒ，shǎo chī kuài cān'},
             {'text': 'A: 很好！你有尝试过什么健康食谱吗？',
@@ -219,7 +219,7 @@ DIALOG_VOCAB = {
              'pinyin': 'Nà wǒmen xià cì kěyǐ yīqǐ qù.'}
         ]
     ],
-    "work": [
+    "Work": [
         [{'text': 'A: 你现在的工作是什么？',
           'role': 'question',
           'pinyin': 'nǐ xiàn zài de ɡōnɡ zuò shì shén me'},
@@ -270,7 +270,7 @@ DIALOG_VOCAB = {
           'pinyin': 'Wǒ zhǔyào fùzé ruǎnjiàn kāifā hé cèshì.'},
          {'text': 'A: 听起来很有趣！', 'role': 'question', 'pinyin': 'Tīng qǐlái hěn yǒuqù!'}]
     ],
-    "food": [
+    "Food": [
         [{'text': 'A: 你喜欢尝试新食物吗？',
           'role': 'question',
           'pinyin': 'nǐ xǐ huān chánɡ shì xīn shí wù mɑ？'},
@@ -326,7 +326,7 @@ DIALOG_VOCAB = {
           'role': 'answer',
           'pinyin': 'Shì de, tèbié shì hé péngyǒu yīqǐ qù.'}]
     ],
-    "culture": [
+    "Culture": [
         [{'text': 'A: 你对中国的文化有兴趣吗？',
           'role': 'question',
           'pinyin': 'nǐ duì zhōnɡ ɡuó de wén huà yǒu xìnɡ qù mɑ?'},
@@ -382,7 +382,7 @@ DIALOG_VOCAB = {
           'role': 'answer',
           'pinyin': 'Yǒu, qùnián wǒ hé péngyǒu yīqǐ qìngzhù.'}]
     ],
-    "travel": [
+    "Travel": [
         [{'text': 'A: 你最想去哪个地方旅行？',
           'role': 'question',
           'pinyin': 'Nǐ zuì xiǎng qù nǎge dìfāng lǚxíng？'},

@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const Round: React.FC = () => {
   const [countdown, setCountdown] = useState<number>(5); // 5-second countdown for recording
-  const [words, setWords] = useState<string[]>([]); // State to hold the array of words
+  const [words, setWords] = useState<{ text: string; pinyin: string }[]>([]); // State to hold the array of word objects with text and pinyin
   const [currentWordIndex, setCurrentWordIndex] = useState<number>(0); // Track the current word's index
   const [isRecording, setIsRecording] = useState<boolean>(false); // Whether the user is currently recording
   const mediaRecorderRef = useRef<MediaRecorder | null>(null); // Ref to hold the MediaRecorder instance
@@ -24,12 +24,14 @@ const Round: React.FC = () => {
     // Fetch the words when the component mounts
     const callGetTopicWordsAPI = async () => {
       try {
-          const response = await fetch('http://localhost:8080/get_normal_1v1_words'); // Call your backend API
+          const response = await fetch(`http://localhost:8080/get_normal_1v1_words?topic=${selectedTopic}`);
           const data = await response.json(); // Parse the JSON response
-          setWords(data.words); // Assuming data.words is the array of words
+          console.log(data, "dataaa")
+          setWords(data); // Assuming data.words is the array of words
+
       } catch (error) {
         console.error("Error calling API:", error);
-        setWords(['Error']); // Set a default word if there's an error
+        setWords([{ text: 'Error', pinyin: '' }]); // Set a default word if there's an error
       }
     };
 
@@ -146,65 +148,69 @@ const Round: React.FC = () => {
       }
 };
 
-  return (
-    <div className="box-container">
-      <div className="white-box">
-        <h1>{selectedMode.toUpperCase()}</h1>
+return (
+  <div className="box-container">
+    <div className="white-box">
+      <h1>{selectedMode.toUpperCase()}</h1>
 
-        <div className="progress-indicator">
-          <span className="dot"></span>
-          <span className="dot"></span>
-          <span className="dot"></span>
-        </div>
+      <div className="progress-indicator">
+        <span className="dot"></span>
+        <span className="dot"></span>
+        <span className="dot"></span>
+      </div>
 
-        <h3 className="instruction-text">Pronounce this word:</h3>
+      <h3 className="instruction-text">Pronounce this word:</h3>
 
-        <div className="word-box">
-          <h1>{words.length > 0 ? words[currentWordIndex] : 'Loading...'}</h1> {/* Display the current word */}
-        </div>
+      <div className="word-box">
+        {words.length > 0 ? (
+          <>
+            <p>{words[currentWordIndex].pinyin}</p> {/* Display the pinyin below the word */}
 
-        <div>
-          <div className="countdown-circle">
-            <span>{countdown}</span>
-          </div>
-        </div>
-
-        {/* Button to start recording */}
-        <div>
-          <button className="record-button" onClick={startRecording} disabled={isRecording || isLoading}>
-            {isRecording ? 'Recording...' : 'Start Recording'}
-          </button>
-        </div>
-
-        {/* Display the recorded audio */}
-        {audioURL && (
-          <div className="round audio-player">
-            <audio controls src={audioURL} />
-          </div>
+            <h1>{words[currentWordIndex].text}</h1>
+          </>
+        ) : (
+          <h1>Loading...</h1>
         )}
       </div>
 
-      {/* Loading spinner modal */}
-      {isLoading && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>Loading...</h3>
-            <p>Please wait while we process your audio</p>
-          </div>
+      <div>
+        <div className="countdown-circle">
+          <span>{countdown}</span>
         </div>
-      )}
+      </div>
 
-      {/* Modal for displaying score */}
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>Your score: {score}</h3>
-            <button onClick={closeModal}>Next Stage</button>
-          </div>
+      <div>
+        <button className="record-button" onClick={startRecording} disabled={isRecording || isLoading}>
+          {isRecording ? 'Recording...' : 'Start Recording'}
+        </button>
+      </div>
+
+      {audioURL && (
+        <div className="round audio-player">
+          <audio controls src={audioURL} />
         </div>
       )}
     </div>
-  );
+
+    {isLoading && (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <h3>Loading...</h3>
+          <p>Please wait while we process your audio</p>
+        </div>
+      </div>
+    )}
+
+    {isModalOpen && (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <h3>Your score: {score}</h3>
+          <button onClick={closeModal}>Next Stage</button>
+        </div>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default Round;
