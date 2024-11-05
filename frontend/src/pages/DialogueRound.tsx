@@ -19,7 +19,9 @@ const DialogueRound: React.FC = () => {
   const selectedMode = location.state?.selectedMode || 'Normal 1v1'; // Default to "Random" if no topic is selected
   const gameCode = location.state?.gameCode || ''; // Default to " " if no code"
   const playerRole = location.state?.role || 'q'; // Default to "Random" if no topic is selected
-  const [dialogues, setDialogues] = useState<{ role: string; text: string }[]>([]);
+  const [dialogues, setDialogues] = useState<{
+    pinyin: string; role: string; text: string 
+}[]>([]);
 
   const navigate = useNavigate();
 
@@ -27,13 +29,17 @@ const DialogueRound: React.FC = () => {
     // Fetch the dialogue data on mount
     const callGetTopicWordsAPI = async () => {
       try {
-        const response = await fetch('http://localhost:8080/get_dialogue_1v1_words');
+        console.log(selectedTopic, "selecetedTopic")
+        const response = await fetch(`http://localhost:8080/get_dialogue_1v1_words?topic=${selectedTopic}`);
         const data = await response.json();
         console.log(data);
-        setDialogues(data.dialogues);
+        setDialogues(data);
       } catch (error) {
         console.error("Error calling API:", error);
-        setDialogues([{ role: playerRole, text: 'Error' }]);
+        setDialogues([{
+          role: playerRole, text: 'Error',
+          pinyin: ''
+        }]);
       }
     };
 
@@ -101,7 +107,10 @@ const DialogueRound: React.FC = () => {
           if (base64Audio) {
             const message = {
               action: 'audio_input',
-              word: filteredDialogues[currentDialogueIndex].text,
+              gameMode: selectedMode,
+              word: { text: filteredDialogues[currentDialogueIndex].text, pinyin: filteredDialogues[currentDialogueIndex].pinyin },
+              order: currentDialogueIndex,
+              playerRole: playerRole,
               audio: base64Audio,
             };
             if (socket && socket.readyState === WebSocket.OPEN) {
@@ -148,6 +157,7 @@ const DialogueRound: React.FC = () => {
         <h1>{selectedMode.toUpperCase()}</h1>
         <h3 className="instruction-text">Pronounce this sentence:</h3>
         <div className="word-box">
+          <h3>{filteredDialogues.length > 0 ? filteredDialogues[currentDialogueIndex].pinyin : 'Loading...'}</h3>
           <h1>{filteredDialogues.length > 0 ? filteredDialogues[currentDialogueIndex].text : 'Loading...'}</h1>
         </div>
         <div>

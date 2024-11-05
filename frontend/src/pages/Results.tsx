@@ -59,16 +59,31 @@ const Results: React.FC = () => {
     useEffect(() => {
         const callGetRoundResults = async () => {
             try {
-                console.log(gameCode, "gameCode");
-                const response = await fetch(`http://localhost:8080/results?match_code=${gameCode}`); // Include match_code as query param
-                const data = await response.json();
-                console.log(data, "data");
+                if (selectedMode == "Normal 1v1"){
+                    console.log(selectedMode, "selectedMode");
+                    const response = await fetch(`http://localhost:8080/results?match_code=${gameCode}`); // Include match_code as query param
+                    const data = await response.json();
+                    console.log(data, "data");
 
-                // Set initial results if both players' data is available
-                if (data[2]?.player1 && data[2]?.player2) {
-                    setResults(data);
-                } else {
-                    console.log("Waiting for the other user to complete");
+                    // Set initial results if both players' data is available
+                    if (data[2]?.player1 && data[2]?.player2) {
+                        setResults(data);
+                    } else {
+                        console.log("Waiting for the other user to complete");
+                    }
+                }
+                else {
+                    console.log(selectedMode, "selectedMode");
+                    const response = await fetch(`http://localhost:8080/dialogue_results?match_code=${gameCode}`); // Include match_code as query param
+                    const data = await response.json();
+                    console.log(data, "data");
+
+                    // Set initial results if both players' data is available
+                    if (data[2]?.player1 && data[2]?.player2) {
+                        setResults(data);
+                    } else {
+                        console.log("Waiting for the other user to complete");
+                    }
                 }
             } catch (error) {
                 console.error("Error calling results API:", error);
@@ -111,6 +126,7 @@ const Results: React.FC = () => {
                 <ResultsCard
                   key={index} // Use index as key if items are not guaranteed to have unique IDs
                   word={item.word}
+                  pinyin={item.pinyin}
                   sample={item.sample}
                   player1={item.player1}
                   player2={item.player2}

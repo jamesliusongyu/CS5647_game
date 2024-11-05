@@ -23,9 +23,11 @@ const Lobby: React.FC = () => {
         const data = JSON.parse(event.data);
         if (data.status === 'success') {
           console.log(inviteCode, "inviteCode")
+          console.log(data.topic, "topic from backend")
+          const selectedTopic = data.topic
           // Navigate to the match page on successful room join
           const role = "answer"
-          navigate('/match', { state: { code: inviteCode, selectedMode: gamemode , role} });
+          navigate('/match', { state: { code: inviteCode, selectedMode: gamemode , role, selectedTopic} });
         } else if (data.status === 'error') {
           setErrorMessage(data.message); // Display error message on invalid code
         }

@@ -92,6 +92,7 @@ class DBHandler():
 
             # If filter_criteria is provided, load data matching the filter
             if filter_criteria:
+                print (filter_criteria, "filter")
                 data = list(collection.find(filter_criteria))
             else:
                 # Load all data if no filter is provided

@@ -18,6 +18,8 @@ def setup_http_server():
     app.router.add_get('/get_dialogue_1v1_words', get_dialogue_1v1_words)
 
     app.router.add_get('/results', backend_handler.get_results)
+    app.router.add_get('/dialogue_results', backend_handler.get_dialogue_results)
+
 
 
     # Configure CORS for the application
