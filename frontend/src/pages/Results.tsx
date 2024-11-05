@@ -8,53 +8,13 @@ import { useWebSocket } from '../contexts/WebSocketContext'; // Assuming you hav
 const Results: React.FC = () => {
     const [results, setResults] = useState<any[]>([]);
     const location = useLocation(); // Use this to get the topic passed from TopicSelection
-    const selectedTopic = location.state?.topic || 'Random'; // Default to "Random" if no topic is selected
     const selectedMode = location.state?.selectedMode || 'Normal 1v1'; // Default to "Random" if no topic is selected
 
     const gameCode = location.state?.gameCode || ''; // Default to " " if no code"
     // WebSocket setup
     const socket = useWebSocket()
 
-    
-    // sample data
-    // const data = [
-    //     {
-    //         word: "chicken",
-    //         sample: "audiourl1",
-    //         player1: {
-    //             username: "xxx",
-    //             audio: "audiourl1",
-    //             score1: 0.9,
-    //             score2: 0.8,
-    //         },
-    //         player2: {
-    //             username: "yyy",
-    //             audio: "audiourl2",
-    //             score1: 0.5,
-    //             score2: 0.4,
-    //         }
-    //     },
-    //     {
-    //         word: "rice",
-    //         sample: "audiourl4",
-    //         player1: {
-    //             username: "xxx",
-    //             audio: "audiourl1",
-    //             score1: 0.9,
-    //             score2: 0.8,
-    //         },
-    //         player2: {
-    //             username: "yyy",
-    //             audio: "audiourl2",
-    //             score1: 0.5,
-    //             score2: 0.4,
-    //         }
-    //     }
-    // ];
-
     // calls the backend path /results to retrieve the results stored in the database and display   
-
-
     // Fetch initial results from the backend
     useEffect(() => {
         const callGetRoundResults = async () => {

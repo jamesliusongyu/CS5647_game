@@ -170,11 +170,11 @@ const DialogueRound: React.FC = () => {
             {isRecording ? 'Recording...' : 'Start Recording'}
           </button>
         </div>
-        {audioURL && (
+        {/* {audioURL && (
           <div className="round audio-player">
             <audio controls src={audioURL} />
           </div>
-        )}
+        )} */}
       </div>
       {isLoading && (
         <div className="modal-overlay">

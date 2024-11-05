@@ -10,12 +10,12 @@ interface PlayerProps {
   pinyin: string;
   order: string;
   playerRole: string;
-  sample : string;
+  sample: string;
 }
 
 interface ResultsCardProps {
   word: string;
-  pinyin : string;
+  pinyin: string;
   sample: string;  // Base64 encoded sample audio
   player1: PlayerProps;
   player2: PlayerProps;
@@ -32,7 +32,7 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, pinyin, sample, player1
   const displayWord2 = displayWord1 === (word || player2.word) ? null : word || player2.word;
 
   const sampleWord1 = sample || player1.sample
-  const sampleWord2 = sampleWord1 === (sample || player2.sample) ? null: sample || player2.sample;
+  const sampleWord2 = sampleWord1 === (sample || player2.sample) ? null : sample || player2.sample;
 
   useEffect(() => {
     console.log("Rendering ResultsCard");
@@ -79,18 +79,16 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, pinyin, sample, player1
     <div className="card">
       <div className="panel-container">
         <div className="panel">
-        <h3 className="result-word">{pinyin}</h3>
-
-          <h2 className="result-word">{displayWord1}</h2>
-          <h2 className="result-word">{displayWord2}</h2>
-
+          <h3 className="result-word">{pinyin}</h3>
           <h3 className="result-word">Sample Answer</h3>
+          <h2 className="result-word">{displayWord1}</h2>
           {sampleAudioURL1 && (
             <div className="audio-player">
               <audio controls src={sampleAudioURL1} />
             </div>
           )}
-           {sampleAudioURL2 && (
+          <h2 className="result-word">{displayWord2}</h2>
+          {sampleAudioURL2 && (
             <div className="audio-player">
               <audio controls src={sampleAudioURL2} />
             </div>
@@ -104,7 +102,7 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, pinyin, sample, player1
                 <audio controls src={player1AudioURL} />
               </div>
             )}
-            <p className="result-word">Score: {player1.score1}</p>
+            <p className="result-word score">Score: {player1.score1}</p>
             {/* <p className="result-word">Score 2: {player1.score2}</p> */}
           </div>
           <div className="player-result">
@@ -114,7 +112,7 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, pinyin, sample, player1
                 <audio controls src={player2AudioURL} />
               </div>
             )}
-            <p className="result-word">Score: {player2.score1}</p>
+            <p className="result-word score">Score: {player2.score1}</p>
             {/* <p className="result-word">Score 2: {player2.score2}</p> */}
           </div>
         </div>
