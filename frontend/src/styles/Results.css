@@ -6,7 +6,6 @@
   background-color: #e1d5ee;
   border-radius: 10px;
   width: 100%;
-  max-width: 800px;  /* Limit the width to make it more readable */
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin-bottom: 20px;
@@ -22,11 +21,20 @@
 
 .audio-player {
   margin-top: 10px;
+  width: 100%;
+}
+
+audio {
+  width: 100%;
 }
 
 .result-word {
   margin-bottom: 10px;
   color: #70528b;
+}
+
+.result-word.score {
+  margin-bottom: 20px;
 }
 
 h1, h3 {

@@ -30,13 +30,27 @@ div {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   width: 100%;
   /* Make the box take up a majority of the width */
-  max-width: 50%;
   min-height: 40vh;
   
 }
 
 .white-box > h1 {
   width: 100%;
+}
+
+
+/* Default for desktop screens */
+@media (min-width: 1080px) {
+  .white-box {
+    max-width: 50%;
+  }
+}
+
+/* For tablet screens */
+@media (min-width: 768px) and (max-width: 1440px) {
+  .white-box {
+    max-width: 75%;
+  }
 }
 
 .logo-container {
