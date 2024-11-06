@@ -64,10 +64,9 @@ const Round: React.FC = () => {
         const data = JSON.parse(event.data);
         if (data.action === 'score') {
           // wait 2 seconds to demonstrate the loading works
-          await sleep(2000);
-
+          // await sleep(2000);
           setIsLoading(false); // Stop loading once the score is received
-          openScoreModal(data.score);
+          openScoreModal(data.score['overall']);
         }
       };
     }
