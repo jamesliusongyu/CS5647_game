@@ -1,6 +1,9 @@
 # Ignore the virtual environment directory
 venv/
 
+# Env files
+.env
+
 # Node.js dependencies
 node_modules/
 
