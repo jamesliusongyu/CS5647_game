@@ -1,6 +1,4 @@
-/* Resetting margin and padding */
-
-
+/* General Styling */
 
 .white-box {
   background-color: #e1d5ee;
@@ -17,16 +15,52 @@
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.audio-player {
-  margin-top: 10px;
-  width: 100%;
+/* Panels */
+
+.panel {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid #000000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  border-radius: 20px; /* Increase for more rounded edges */
+
+
 }
+
+.panel2 {
+  width: 50%;
+  padding-top: 20%;
+  background-color: #f9f9f9;
+  border-radius: 20px; /* Increase for more rounded edges */
+
+  border: 1px solid #020202;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.translate-header {
+  padding-top: 5%;
+}
+
+.translate-word {
+  padding-top: 2%;
+  font-style: italic;
+
+}
+/* Audio Player */
 
 audio {
-  width: 100%;
+  width: 80%;
 }
+
+/* Text Styling */
 
 .result-word {
   margin-bottom: 10px;

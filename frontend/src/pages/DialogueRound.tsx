@@ -4,7 +4,7 @@ import '../styles/Round.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const DialogueRound: React.FC = () => {
-  const [countdown, setCountdown] = useState<number>(5); // 5-second countdown for recording
+  const [countdown, setCountdown] = useState<number>(15); // 5-second countdown for recording
   const [words, setWords] = useState<string[]>([]); // State to hold the array of words
   const [currentDialogueIndex, setCurrentDialogueIndex] = useState<number>(0);
   const [isRecording, setIsRecording] = useState<boolean>(false); // Whether the user is currently recording
@@ -70,10 +70,11 @@ const DialogueRound: React.FC = () => {
     if (socket) {
       socket.onmessage = async (event: MessageEvent) => {
         const data = JSON.parse(event.data);
+        console.log(data, "DDD")
         if (data.action === 'score') {
           await sleep(2000);
           setIsLoading(false);
-          openScoreModal(data.score);
+          openScoreModal(data.score['overall']);
         }
       };
     }
@@ -85,7 +86,7 @@ const DialogueRound: React.FC = () => {
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
       setIsRecording(true);
-      setCountdown(5);
+      setCountdown(15);
 
       mediaRecorder.start();
 

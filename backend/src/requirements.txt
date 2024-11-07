@@ -10,3 +10,6 @@ scipy>=1.13.1
 tqdm==4.66.1
 websockets==13.1
 ffmpeg-python==0.2.0
+jieba==0.42.1
+azure-cognitiveservices-speech==1.41.1
+zhon==2.0.2

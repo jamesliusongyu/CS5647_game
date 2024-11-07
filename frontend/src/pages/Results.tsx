@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Results.css';
 import ResultsCard from '../components/ResultsCard'
+import ResultsCardNormal from '../components/ResultsCardNormal'
+
 import { useLocation } from 'react-router-dom';
 import { useWebSocket } from '../contexts/WebSocketContext'; // Assuming you have a WebSocket context
 
@@ -79,23 +81,36 @@ const Results: React.FC = () => {
 
     return (
         <div className="container">
-          <div className="white-box">
-            <h1>Results: {selectedMode.toUpperCase()}</h1>
-            {results && results.length > 0 ? (
-              results.map((item, index) => (
-                <ResultsCard
-                  key={index} // Use index as key if items are not guaranteed to have unique IDs
-                  word={item.word}
-                  pinyin={item.pinyin}
-                  sample={item.sample}
-                  player1={item.player1}
-                  player2={item.player2}
-                />
-              ))
-            ) : (
-              <p>Waiting for other user to complete...</p>
-            )}
-          </div>
+            <div className="white-box">
+                <h1>Results: {selectedMode.toUpperCase()}</h1>
+                {results && results.length > 0 ? (
+                    selectedMode === "Dialogue 1v1" ? (
+                        results.map((item, index) => (
+                            <ResultsCard
+                                key={index}
+                                word={item.word}
+                                pinyin={item.pinyin}
+                                sample={item.sample}
+                                player1={item.player1}
+                                player2={item.player2}
+                            />
+                        ))
+                    ) : selectedMode === "Normal 1v1" ? (
+                        results.map((item, index) => (
+                            <ResultsCardNormal
+                                key={index}
+                                word={item.word}
+                                pinyin={item.pinyin}
+                                sample={item.sample}
+                                player1={item.player1}
+                                player2={item.player2}
+                            />
+                        ))
+                    ) : null
+                ) : (
+                    <p>Waiting for other user to complete...</p>
+                )}
+            </div>
         </div>
     );
 };

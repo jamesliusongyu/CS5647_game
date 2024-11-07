@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/Results.css';
+import '../styles/ResultsNormal.css';
 
 interface PlayerProps {
   username: string;
@@ -7,8 +7,6 @@ interface PlayerProps {
   score: ScoreProps;
   word: string;
   pinyin: string;
-  order: string;
-  playerRole: string;
   sample: string;
 }
 
@@ -19,7 +17,7 @@ interface ScoreProps {
   fluency: string;
 }
 
-interface ResultsCardProps {
+interface ResultsNormalCardProps {
   word: string;
   pinyin: string;
   sample: string;  // Base64 encoded sample audio
@@ -27,26 +25,19 @@ interface ResultsCardProps {
   player2: PlayerProps;
 }
 
-const ResultsCard: React.FC<ResultsCardProps> = ({ word, pinyin, sample, player1, player2 }) => {
+const ResultsCardNormal: React.FC<ResultsNormalCardProps> = ({ word, pinyin, sample, player1, player2 }) => {
   const [sampleAudioURL1, setSampleAudioURL1] = useState<string | null>(null);
-  const [sampleAudioURL2, setSampleAudioURL2] = useState<string | null>(null);
-
   const [player1AudioURL, setPlayer1AudioURL] = useState<string | null>(null);
   const [player2AudioURL, setPlayer2AudioURL] = useState<string | null>(null);
+  const [translation, setTranslation] = useState<string>(""); // New state for the translation
 
   const displayWord1 = word || player1.word;
-  const displayWord2 = displayWord1 === (word || player2.word) ? null : word || player2.word;
-
-  const sampleWord1 = sample || player1.sample
-  const sampleWord2 = sampleWord1 === (sample || player2.sample) ? null : sample || player2.sample;
-
-  const [translation1, setTranslation1] = useState<string>(""); // New state for the translation
-  const [translation2, setTranslation2] = useState<string>(""); // New state for the translation
+  const sampleWord1 = sample || player1.sample;
 
   useEffect(() => {
-    console.log("Rendering ResultsCard");
+    console.log("Rendering ResultsDialogueCard");
 
-    // Helper function to convert Base64 to Object URL
+    // Function to convert Base64 to Object URL
     const decodeBase64Audio = (base64String: string): string => {
       const binaryString = atob(base64String);
       const binaryLen = binaryString.length;
@@ -64,9 +55,6 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, pinyin, sample, player1
     if (sampleWord1) {
       setSampleAudioURL1(decodeBase64Audio(sampleWord1));
     }
-    if (sampleWord2) {
-      setSampleAudioURL2(decodeBase64Audio(sampleWord2));
-    }
     if (player1.audio) {
       setPlayer1AudioURL(decodeBase64Audio(player1.audio));
     }
@@ -79,19 +67,10 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, pinyin, sample, player1
       try {
         const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=zh&tl=en&dt=t&q=${encodeURIComponent(displayWord1)}`);
         const data = await response.json();
-        setTranslation1(data[0][0][0]); // Set translated text
+        setTranslation(data[0][0][0]); // Set translated text
       } catch (error) {
         console.error("Translation API error:", error);
-        setTranslation1("Translation unavailable");
-      }
-
-      try {
-        const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=zh&tl=en&dt=t&q=${encodeURIComponent(displayWord2)}`);
-        const data = await response.json();
-        setTranslation2(data[0][0][0]); // Set translated text
-      } catch (error) {
-        console.error("Translation API error:", error);
-        setTranslation2("Translation unavailable");
+        setTranslation("Translation unavailable");
       }
     };
 
@@ -100,38 +79,25 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, pinyin, sample, player1
     // Clean up object URLs to prevent memory leaks
     return () => {
       if (sampleAudioURL1) URL.revokeObjectURL(sampleAudioURL1);
-      if (sampleAudioURL2) URL.revokeObjectURL(sampleAudioURL2);
-
       if (player1AudioURL) URL.revokeObjectURL(player1AudioURL);
       if (player2AudioURL) URL.revokeObjectURL(player2AudioURL);
     };
-  }, [sample, player1.audio, player2.audio]);
+  }, [sample, player1.audio, player2.audio, displayWord1]);
 
   return (
     <div className="card">
       <div className="panel-container">
-        <div className="panel3">
-          <h2 className="result-word">Sample Answer</h2> 
+        <div className="panel2">
+          <h2 className="result-word">Sample Answer</h2>
           <h3 className="result-word">{pinyin}</h3>
-          <h2 className="result-word">{displayWord1}</h2>
+          <h3 className="result-word">{displayWord1}</h3>
           {sampleAudioURL1 && (
             <div className="audio-player">
               <audio controls src={sampleAudioURL1} />
             </div>
           )}
           <h2 className="translate-header" >English Translation </h2>
-          <h3 className="translate-word">{translation1}</h3> {/* Display the translation */}
-
-          <hr className="divider2" />
-
-          <h2 className="result-word">{displayWord2}</h2>
-          {sampleAudioURL2 && (
-            <div className="audio-player">
-              <audio controls src={sampleAudioURL2} />
-            </div>
-          )}
-           <h2 className="translate-header" >English Translation </h2>
-           <h3 className="translate-word">{translation2}</h3> {/* Display the translation */}
+          <h3 className="translate-word">{translation}</h3> {/* Display the translation */}
         </div>
         <div className="panel">
           <div className="player-result">
@@ -146,9 +112,9 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, pinyin, sample, player1
             <p className="result-word">Acccuracy Score: {player1.score.accuracy}</p>
             <p className="result-word">Fluency Score: {player1.score.fluency}</p>
           </div>
-          <div className="player-result">
-          <hr className="divider2" />
+          <hr className="divider" />
 
+          <div className="player-result">
             <h2 className="result-word">{player2.username}'s Answer</h2>
             {player2AudioURL && (
               <div className="audio-player">
@@ -166,4 +132,4 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, pinyin, sample, player1
   );
 };
 
-export default ResultsCard;
+export default ResultsCardNormal;
