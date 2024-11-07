@@ -149,6 +149,9 @@ const Round: React.FC = () => {
 
 return (
   <div className="box-container">
+    <div className="centered-inline">
+      <h2>{`Round ${currentWordIndex + 1} / ${words.length}`}</h2> {/* Display current round */}
+    </div>
     <div className="white-box">
       <h1>{selectedMode.toUpperCase()}</h1>
 

@@ -154,11 +154,14 @@ const DialogueRound: React.FC = () => {
 
   return (
     <div className="box-container">
+      <div className="centered-inline">
+        <h2>{`Round ${currentDialogueIndex + 1} / ${dialogues.length}`}</h2> {/* Display current round */}
+      </div>
       <div className="white-box">
         <h1>{selectedMode.toUpperCase()}</h1>
         <h3 className="instruction-text">Pronounce this sentence:</h3>
         <div className="word-box">
-          <h3>{filteredDialogues.length > 0 ? filteredDialogues[currentDialogueIndex].pinyin : 'Loading...'}</h3>
+          <h2>{filteredDialogues.length > 0 ? filteredDialogues[currentDialogueIndex].pinyin : 'Loading...'}</h2>
           <h1>{filteredDialogues.length > 0 ? filteredDialogues[currentDialogueIndex].text : 'Loading...'}</h1>
         </div>
         <div>

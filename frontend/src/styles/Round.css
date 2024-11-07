@@ -13,6 +13,10 @@
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
+.centered-inline {
+  text-align: center;
+
+}
 
 .dot {
   width: 10px;
@@ -24,7 +28,7 @@
 .instruction-text {
   width: 100%;
   font-size: 1.5rem;
-  color: #f49ac2;
+  color: #000000;
   margin-bottom: 1rem;
 }
 
