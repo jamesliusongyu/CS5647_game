@@ -4,13 +4,19 @@ import '../styles/Results.css';
 interface PlayerProps {
   username: string;
   audio: string;  // Base64 encoded string
-  score1: number;
-  score2: number;
+  score: ScoreProps;
   word: string;
   pinyin: string;
   order: string;
   playerRole: string;
   sample: string;
+}
+
+interface ScoreProps {
+  overall: string;
+  accuracy: string;
+  completeness: string;
+  fluency: string;
 }
 
 interface ResultsCardProps {
@@ -102,8 +108,10 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, pinyin, sample, player1
                 <audio controls src={player1AudioURL} />
               </div>
             )}
-            <p className="result-word score">Score: {player1.score1}</p>
-            {/* <p className="result-word">Score 2: {player1.score2}</p> */}
+            <p className="result-word score">Overall Score: {player1.score.overall}</p>
+            <p className="result-word">Completeness Score: {player1.score.completeness}</p>
+            <p className="result-word">Acccuracy Score: {player1.score.accuracy}</p>
+            <p className="result-word">Fluency Score: {player1.score.fluency}</p>
           </div>
           <div className="player-result">
             <h3 className="result-word">{player2.username}'s Answer</h3>
@@ -112,8 +120,10 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ word, pinyin, sample, player1
                 <audio controls src={player2AudioURL} />
               </div>
             )}
-            <p className="result-word score">Score: {player2.score1}</p>
-            {/* <p className="result-word">Score 2: {player2.score2}</p> */}
+            <p className="result-word score">Overall Score: {player2.score.overall}</p>
+            <p className="result-word">Completeness Score: {player2.score.completeness}</p>
+            <p className="result-word">Acccuracy Score: {player2.score.accuracy}</p>
+            <p className="result-word">Fluency Score: {player2.score.fluency}</p>
           </div>
         </div>
       </div>

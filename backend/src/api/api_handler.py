@@ -1,12 +1,13 @@
 # src/api/api_handler.py
 import base64
+import os
 import random
 
 from aiohttp import web
 import time
 
+from .model.azure_model import AzureModel
 from .audio_converter import convert_webm_to_wav
-from .model.model_caller import make_grpc_request
 from .vocab import NORMAL_VOCAB, DIALOG_VOCAB
 
 
@@ -62,29 +63,21 @@ async def get_dialogue_1v1_words(request):
     return web.json_response(random_response)
 
 # API function to handle scoring logic (stub implementation)
-async def return_topic_words_score(word: str, audio_input: bytes):
-    # Comment the next line once the actual implementation of words is added
-    word = "我爱吃苹果"
+async def return_topic_words_score(word: str, audio_input: bytes, client_id: str):
     # Convert the WebM audio input to WAV format (16kHz 16-bit)
     wav = convert_webm_to_wav(audio_input)
-    with open('./api/test.wav', 'wb') as wav_file:
-        wav_file.write(wav)
 
-    # Make a gRPC request to the model server and get the average score
-    response = await make_grpc_request(word, wav)
-    print(response)
+    # Make a request to the model server and get the scores
+    am = AzureModel()
+    response = am.run_assessment(word=word, audio=wav)
+    # response = await make_grpc_request(word, wav)
 
     # Simulate scoring based on the word and audio input (to be replaced with actual logic)
     print(f"Scoring for word '{word}' with audio input of size {len(audio_input) / 1024 / 1024} megabytes")
-    # return {"word": word, "score": 100}  # Return a dummy score of 100 for now
 
     base64_audio = base64.b64encode(wav).decode('utf-8')
 
     json_data = {
-        "match_code": "FW369",
-        "game_mode": "normal",
-        "username": "junkrat1",
-        "overall_score": response,
         "question": word,
         "audio_file": base64_audio,
         "score": response,

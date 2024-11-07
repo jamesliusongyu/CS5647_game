@@ -53,9 +53,12 @@ class MatchMaking():
                     audio_input = base64.b64decode(audio_base64)
                     # If binary data (audio) is received, handle the audio input
                     print(f"Websocket(): Received audio data from Client ID {client_id}")
+                    
+                    # Get word from dictonary 
+                    word = word_for_round['text']
 
                     # Call the return_topic_words_score with the current word and audio input
-                    score_response = await return_topic_words_score(word_for_round, audio_input)
+                    score_response = await return_topic_words_score(word, audio_input, client_id)
                     # persisted the score_response to the database
 
                     if data.get("gameMode") == "Normal 1v1":
@@ -175,12 +178,12 @@ class MatchMaking():
                 "player1": {
                     "username": "username1",
                     "audio": "base64_audio_1",
-                    "score1": score1,
+                    "score": {},
                 },
                 "player2": {
                     "username": "username2",
                     "audio": "base64_audio_2",
-                    "score1": score1,
+                    "score": {},
                 }
             },
             ...
@@ -227,7 +230,7 @@ class MatchMaking():
             player_data = {
                 "username": username,
                 "audio": base64.b64encode(datum["audio"]).decode('utf-8'),
-                "score1": datum.get("score"),
+                "score": datum.get("score"),
             }
 
             # Assign data to player1 or player2 based on first availability
@@ -335,7 +338,7 @@ class MatchMaking():
             player_data = {
                 "username": username,
                 "audio": base64.b64encode(datum["audio"]).decode('utf-8'),
-                "score1": datum.get("score"),
+                "score": datum.get("score"),
                 "word": word_text,
                 "sample": sample_map.get(word_text_clean, ""),
                 "pinyin": pinyin,

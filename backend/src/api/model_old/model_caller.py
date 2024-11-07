@@ -35,6 +35,7 @@ async def make_grpc_request(text: str, audio: bytes):
 def parse_audio_data(response: bytes):
     ans = 0;
     n = 0;
+    print(f"parse_audio_data(): Respose: {response}")
     for char_info in response.scored_character:
         n = n + 1
         character = " ".join(char_info.reference_phone)
