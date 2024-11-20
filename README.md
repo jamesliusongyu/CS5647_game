@@ -10,6 +10,7 @@ pip install -r backend/src/requirements.txt
 # Frontend
 
 In one terminal, run:
+
 cd frontend
 npm install
 npm run dev
