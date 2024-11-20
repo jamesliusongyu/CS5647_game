@@ -155,7 +155,7 @@ const DialogueRound: React.FC = () => {
   return (
     <div className="box-container">
       <div className="centered-inline">
-        <h2>{`Round ${currentDialogueIndex + 1} / ${dialogues.length}`}</h2> {/* Display current round */}
+        <h2>{`Round ${currentDialogueIndex + 1} / ${dialogues.length/2}`}</h2> {/* Display current round */}
       </div>
       <div className="white-box">
         <h1>{selectedMode.toUpperCase()}</h1>

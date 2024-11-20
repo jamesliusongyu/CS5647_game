@@ -155,12 +155,6 @@ return (
     <div className="white-box">
       <h1>{selectedMode.toUpperCase()}</h1>
 
-      <div className="progress-indicator">
-        <span className="dot"></span>
-        <span className="dot"></span>
-        <span className="dot"></span>
-      </div>
-
       <h3 className="instruction-text">Pronounce this word:</h3>
 
       <div className="word-box">

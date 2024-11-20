@@ -27,14 +27,19 @@ body {
   justify-content: center;
 }
 
-.panel {
+.panel.lobby {
   width: 45%;
   /* Each element takes 45% of the container's width */
-  padding: 0 20px 20px;
+  padding: 20px;
   margin: 0 10px 10px;
   border-radius: 10px;
-  align-self: end;
+  min-height: 100%;
+  border: none;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
 }
+
 
 .accent-button {
   background-color: #7B68B2;

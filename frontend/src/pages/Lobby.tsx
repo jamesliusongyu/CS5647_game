@@ -64,10 +64,10 @@ const Lobby: React.FC = () => {
       <div className="white-box">
         <h1>LOBBY</h1>
         <div className="panel-container">
-          <div className="panel">
+          <div className="panel lobby">
             <button className="accent-button" onClick={handleCreateRoom}>CREATE ROOM</button>
           </div>
-          <div className="panel">
+          <div className="panel lobby">
             <input
               type="text"
               value={inviteCode}

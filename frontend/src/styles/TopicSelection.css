@@ -21,13 +21,15 @@
   
   .topics-panel {
     display: flex;
-    justify-content: space-around;
+    flex-wrap: wrap;
     width: 100%;
+    justify-content: space-evenly;
     padding-bottom: 5%;
   }
   
   .topic-box {
     background-color: #6EE4E8;
+    margin: 2px;
     width: 10em;
     height: 7em;
     display: flex;
